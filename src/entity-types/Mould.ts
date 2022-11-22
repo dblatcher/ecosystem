@@ -26,10 +26,6 @@ export class Mould extends Entity {
       this.leave(`Oh no! ${this.description} has starved!`);
     } else if (this.data.energy > 5) {
       return this.reproduce();
-    } else {
-      this.environment?.log(
-        `${this.description} was at rest. E:${this.data.energy}`
-      );
     }
   }
 

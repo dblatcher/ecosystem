@@ -1,10 +1,11 @@
-import { getDistance } from "../baseTypes";
+import { Direction, getDistance } from "../baseTypes";
 import { Entity, EntityData } from "../Entity";
 import { Corpse } from "./Corpse";
 import { Mould } from "./Mould";
 
 export type AnimalData = EntityData & {
   energy: number;
+  direction?: Direction;
 };
 
 export abstract class Animal extends Entity {
@@ -71,9 +72,9 @@ export abstract class Animal extends Entity {
   }
 
   // To do - generalise movement to not be x,y
-  moveBy(x: number, y: number) {
-    this.data.position.x += x;
-    this.data.position.y += y;
+  moveBy(direction: Direction) {
+    this.data.position.x += direction.x;
+    this.data.position.y += direction.y;
   }
 
   moveTowards(entity: Entity) {
@@ -81,13 +82,13 @@ export abstract class Animal extends Entity {
     const { x, y } = this.data.position;
 
     if (entity.data.position.x > x) {
-      return this.moveBy(1, 0);
+      return this.moveBy({ x: 1, y: 0 });
     } else if (entity.data.position.x < x) {
-      return this.moveBy(-1, 0);
+      return this.moveBy({ x: -1, y: 0 });
     } else if (entity.data.position.y > y) {
-      return this.moveBy(0, 1);
+      return this.moveBy({ x: 0, y: 1 });
     } else if (entity.data.position.y < y) {
-      return this.moveBy(0, -1);
+      return this.moveBy({ x: 0, y: -1 });
     }
   }
 
