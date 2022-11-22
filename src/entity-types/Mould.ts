@@ -60,13 +60,12 @@ export class Mould extends Entity {
           )} but ${otherEntity.description} was already there.`
         );
       } else {
-        environment.log(
+        new Mould({ position: positionForNewMould, energy: 1 }).join(
+          environment,
+          undefined,
           `${this.description} created a new mould at ${describePosition(
             positionForNewMould
           )}.`
-        );
-        new Mould({ position: positionForNewMould, energy: 1 }).join(
-          environment
         );
       }
     } else {

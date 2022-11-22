@@ -24,7 +24,11 @@ export abstract class Entity {
       : `${ENTITY_TYPE_ID}${place}`;
   }
 
-  join(environment: Environment, newPosition?: Position) {
+  join(
+    environment: Environment,
+    newPosition?: Position,
+    customMessage?: string
+  ) {
     if (this.environment) {
       this.leave();
     }
@@ -42,7 +46,7 @@ export abstract class Entity {
     environment.entities.push(this);
     this.environment = environment;
     this.data.position = position;
-    this.environment.log(`${this.description} has joined.`);
+    this.environment.log(customMessage || `${this.description} has joined.`);
   }
 
   leave(customMessage?: string) {
