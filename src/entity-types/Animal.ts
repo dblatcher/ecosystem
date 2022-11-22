@@ -1,18 +1,16 @@
-import {
-  describePosition,
-  Position,
-  positionExists,
-  positionsMatch,
-} from "../baseTypes";
+import { getDistance } from "../baseTypes";
 import { Entity, EntityData } from "../Entity";
+import { Corpse } from "./Corpse";
+import { Mould } from "./Mould";
 
 export type AnimalData = EntityData & {
   energy: number;
 };
 
 export abstract class Animal extends Entity {
-  ENTITY_TYPE_ID = "Animal";
   data: AnimalData;
+  ENTITY_TYPE_ID = "Animal";
+  observationRange = 2;
 
   constructor(data: AnimalData, id?: string) {
     super(data, id);
@@ -24,6 +22,42 @@ export abstract class Animal extends Entity {
       new Corpse({ ...this.data, animalType: this.ENTITY_TYPE_ID }, this.id),
       `Oh no! ${this.description} has starved!`
     );
+  }
+
+  observe(): Entity[] {
+    const { environment, observationRange } = this;
+    if (!environment || !observationRange) {
+      return [];
+    }
+
+    return environment.entities
+      .filter((entity) => entity !== this)
+      .filter(
+        (entity) =>
+          getDistance(entity.data.position, this.data.position) <=
+          observationRange
+      );
+  }
+
+  // To do - generalise movement to not be x,y
+  moveBy(x: number, y: number) {
+    this.data.position.x += x
+    this.data.position.y += y
+  }
+
+  moveTowards(entity: Entity) {
+    // TO DO - prop path finding!
+    const { x, y } = this.data.position;
+
+    if (entity.data.position.x > x) {
+      return this.moveBy(1, 0);
+    } else if (entity.data.position.x < x) {
+      return this.moveBy(-1, 0);
+    } else if (entity.data.position.y > y) {
+      return this.moveBy(0, 1);
+    } else if (entity.data.position.y < y) {
+      return this.moveBy(0, -1);
+    }
   }
 
   act() {
@@ -41,23 +75,44 @@ export abstract class Animal extends Entity {
 
 export class Bug extends Animal {
   ENTITY_TYPE_ID = "Bug";
-}
+  observationRange = 10;
 
-export type CorpseData = EntityData & {
-  animalType: string;
-};
-export class Corpse extends Entity {
-  ENTITY_TYPE_ID = "Corpse";
-  data: CorpseData;
-  constructor(data: CorpseData, id?: string) {
-    super(data, id);
-    this.data = data;
-  }
+  act() {
+    this.data.energy--;
 
-  get description() {
-    const place = describePosition(this.data.position);
-    return this.id
-      ? `The Corpse of ${this.id} the ${this.data.animalType}${place}`
-      : `A ${this.data.animalType} corpse${place} `;
+    if (this.data.energy <= 0) {
+      return this.starve();
+    } else {
+      const inSight = this.observe();
+      this.environment?.log(
+        `${this.description} can see: ${inSight
+          .map((e) => `\n - ${e.description}`)
+          .join()}`
+      );
+
+      const [nearestFood] = inSight
+        .filter((e) => e instanceof Mould)
+        .sort(
+          (a, b) =>
+            getDistance(b.data.position, this.data.position) -
+            getDistance(a.data.position, this.data.position)
+        );
+
+      const distance = getDistance(nearestFood.data.position, this.data.position)
+      if (distance > 1) {
+        this.environment?.log(
+          `${this.description} moving towards ${nearestFood.description}`
+        );
+        this.moveTowards(nearestFood)
+      } else {
+        this.environment?.log(
+          `${this.description} is close enough to eat ${nearestFood.description}`
+        );
+      }
+
+      this.environment?.log(
+        `${this.description} was at rest. E:${this.data.energy}`
+      );
+    }
   }
 }

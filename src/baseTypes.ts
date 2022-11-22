@@ -20,3 +20,7 @@ export const positionExists = (position: Position, space: Space): boolean => {
 export const positionsMatch = (pos1: Position, pos2: Position) => {
   return pos1.x === pos2.x && pos1.y === pos2.y;
 };
+
+export const getDistance = (pos1: Position, pos2: Position) => {
+  return Math.sqrt((pos1.x - pos2.x)**2 + (pos1.y - pos2.y)**2 )
+}
