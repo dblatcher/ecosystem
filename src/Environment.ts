@@ -30,7 +30,9 @@ export class Environment {
     const entitiesThatExistedAtStartOfTick = [...this.entities];
 
     entitiesThatExistedAtStartOfTick.forEach((entity) => {
-      entity.act();
+      if (entity.environment === this) {
+        entity.act();
+      }
     });
   }
 }

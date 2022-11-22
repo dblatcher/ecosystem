@@ -39,10 +39,17 @@ export abstract class Animal extends Entity {
       );
   }
 
+  eatWhole(entity: Mould) {
+    this.data.energy += entity.data.energy;
+    entity.leave(
+      `${this.description} ate ${entity.description} and gained ${entity.data.energy} energy. E:${this.data.energy}`
+    );
+  }
+
   // To do - generalise movement to not be x,y
   moveBy(x: number, y: number) {
-    this.data.position.x += x
-    this.data.position.y += y
+    this.data.position.x += x;
+    this.data.position.y += y;
   }
 
   moveTowards(entity: Entity) {
@@ -90,28 +97,34 @@ export class Bug extends Animal {
           .join()}`
       );
 
-      const [nearestFood] = inSight
+      const foodInSight = inSight
         .filter((e) => e instanceof Mould)
         .sort(
           (a, b) =>
             getDistance(b.data.position, this.data.position) -
             getDistance(a.data.position, this.data.position)
+        ) as Mould[];
+
+      const nearestFood: Mould | undefined = foodInSight[0];
+
+      if (nearestFood) {
+        const distance = getDistance(
+          nearestFood.data.position,
+          this.data.position
         );
 
-      const distance = getDistance(nearestFood.data.position, this.data.position)
-      if (distance > 1) {
-        this.environment?.log(
-          `${this.description} moving towards ${nearestFood.description}`
-        );
-        this.moveTowards(nearestFood)
-      } else {
-        this.environment?.log(
-          `${this.description} is close enough to eat ${nearestFood.description}`
-        );
+        if (distance > 1) {
+          this.environment?.log(
+            `${this.description} moving towards ${nearestFood.description}`
+          );
+          return this.moveTowards(nearestFood);
+        }
+
+        return this.eatWhole(nearestFood);
       }
 
       this.environment?.log(
-        `${this.description} was at rest. E:${this.data.energy}`
+        `${this.description} saw no food and waited. E:${this.data.energy}`
       );
     }
   }
