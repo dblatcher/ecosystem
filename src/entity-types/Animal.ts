@@ -24,19 +24,43 @@ export abstract class Animal extends Entity {
     );
   }
 
-  observe(): Entity[] {
+  observe(report = false): Entity[] {
     const { environment, observationRange } = this;
     if (!environment || !observationRange) {
       return [];
     }
 
-    return environment.entities
+    const inSight = environment.entities
       .filter((entity) => entity !== this)
       .filter(
         (entity) =>
           getDistance(entity.data.position, this.data.position) <=
           observationRange
       );
+
+    if (report) {
+      this.environment?.log(
+        `${this.description} can see: ${inSight
+          .map((e) => `\n - ${e.description}`)
+          .join()}`
+      );
+    }
+
+    return inSight;
+  }
+
+  findNearestMatch(
+    test: { (entity: Entity): boolean },
+    entities: Entity[]
+  ): Entity | undefined {
+    const matches = entities
+      .filter(test)
+      .sort(
+        (a, b) =>
+          getDistance(b.data.position, this.data.position) -
+          getDistance(a.data.position, this.data.position)
+      );
+    return matches[0];
   }
 
   eatWhole(entity: Mould) {
@@ -91,21 +115,11 @@ export class Bug extends Animal {
       return this.starve();
     } else {
       const inSight = this.observe();
-      this.environment?.log(
-        `${this.description} can see: ${inSight
-          .map((e) => `\n - ${e.description}`)
-          .join()}`
-      );
 
-      const foodInSight = inSight
-        .filter((e) => e instanceof Mould)
-        .sort(
-          (a, b) =>
-            getDistance(b.data.position, this.data.position) -
-            getDistance(a.data.position, this.data.position)
-        ) as Mould[];
-
-      const nearestFood: Mould | undefined = foodInSight[0];
+      const nearestFood = this.findNearestMatch(
+        (entity) => entity instanceof Mould,
+        inSight
+      ) as Mould | undefined;
 
       if (nearestFood) {
         const distance = getDistance(
