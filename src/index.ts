@@ -1,10 +1,8 @@
-import { Bug } from "./entity-types/Animal";
+import { Bug } from "./entity-types/Bug";
 import { Mould } from "./entity-types/Mould";
 import { Stone } from "./entity-types/Stone";
 import { Environment } from "./Environment";
 
-const x: boolean = true;
-console.log(x);
 
 const barryTheMould = new Mould(
   { position: { x: 12, y: 13 }, energy: 5 },
