@@ -16,7 +16,7 @@ export type CorpseData = EntityData & {
       const place = describePosition(this.data.position);
       return this.id
         ? `The Corpse of ${this.id} the ${this.data.animalType}${place}`
-        : `A ${this.data.animalType} corpse${place} `;
+        : `A ${this.data.animalType} corpse${place}`;
     }
   }
   

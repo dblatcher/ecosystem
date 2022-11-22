@@ -25,7 +25,7 @@ const environment = new Environment(
 
 console.clear()
 console.log("\n*\n**\n***")
-while (environment.data.time < 5) {
+while (environment.data.time < 20) {
   environment.tick();
 }
 console.log("\n*\n**\n***")

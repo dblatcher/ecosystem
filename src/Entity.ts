@@ -17,9 +17,11 @@ export abstract class Entity {
   }
 
   get description(): string {
-    return `${this.ENTITY_TYPE_ID} ${this.id || ""}${describePosition(
-      this.data.position
-    )}`;
+    const { ENTITY_TYPE_ID, id } = this;
+    const place = describePosition(this.data.position);
+    return id
+      ? `${id} the ${ENTITY_TYPE_ID}${place}`
+      : `${ENTITY_TYPE_ID}${place}`;
   }
 
   join(environment: Environment, newPosition?: Position) {
@@ -74,7 +76,5 @@ export abstract class Entity {
     );
   }
 
-  act() {
-    this.environment?.log(`${this.description} did nothing.`);
-  }
+  act() {}
 }
