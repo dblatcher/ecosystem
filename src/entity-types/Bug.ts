@@ -1,4 +1,4 @@
-import { getDistance, getRandomDirection } from "../baseTypes";
+import { describeDirection, getDistance, getRandomDirection } from "../baseTypes";
 import { Animal } from "./Animal";
 import { Mould } from "./Mould";
 
@@ -38,12 +38,12 @@ export class Bug extends Animal {
         if (!this.data.direction) {
           this.data.direction = getRandomDirection();
           this.environment?.log(
-            `${this.description} saw no food, so it turned to ${this.data.direction?.x},${this.data.direction?.y}`
+            `${this.description} saw no food, so it turned to ${describeDirection(this.data.direction)}`
           );
         }
         this.moveBy(this.data.direction || { x: 0, y: 0 });
         this.environment?.log(
-          `${this.description} went ${this.data.direction?.x},${this.data.direction?.y} in search of food`
+          `${this.description} went ${describeDirection(this.data.direction)} in search of food`
         );
       }
 

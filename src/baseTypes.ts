@@ -35,3 +35,12 @@ export const getRandomDirection = (): Direction => {
   const axis = Math.random() > 0.5 ? "x" : "y";
   return axis === "x" ? { x: sign, y: 0 } : { x: 0, y: sign };
 };
+
+export const describeDirection = (direction: Direction): string => {
+  const { x, y } = direction;
+  const xWord = x === 1 ? "EAST" : x === -1 ? "WEST" : undefined;
+  const yWord = y === 1 ? "NORTH" : y === -1 ? "SOUTH" : undefined;
+  return xWord && yWord
+    ? `${yWord}-${xWord}`
+    : xWord || yWord || "NO DIRECTION";
+};

@@ -1,5 +1,7 @@
 import {
+  describeDirection,
   describePosition,
+  getRandomDirection,
   Position,
   positionExists,
   positionsMatch,
@@ -35,13 +37,12 @@ export class Mould extends Entity {
       return;
     }
     const { x, y } = this.data.position;
-    const random = Math.floor(Math.random() * 4);
-    const positionForNewMould: Position = [
-      { x: x - 1, y: y },
-      { x: x + 1, y: y },
-      { x: x, y: y - 1 },
-      { x: x, y: y + 1 },
-    ][random];
+    const direction = getRandomDirection();
+
+    const positionForNewMould: Position = {
+      x: x + direction.x,
+      y: y + direction.y,
+    };
 
     this.data.energy -= 5;
     if (positionExists(positionForNewMould, environment.data.space)) {
@@ -51,8 +52,8 @@ export class Mould extends Entity {
 
       if (otherEntity) {
         environment.log(
-          `${this.description} sent a spore to ${describePosition(
-            positionForNewMould
+          `${this.description} sent a spore to ${describeDirection(
+            direction
           )} but ${otherEntity.description} was already there.`
         );
       } else {
