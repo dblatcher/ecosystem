@@ -25,7 +25,7 @@ export class Environment {
 
   tick() {
     this.data.time++;
-    this.log(`TIME: ${this.data.time}`);
+    this.log(`\nTIME: ${this.data.time}`);
 
     const entitiesThatExistedAtStartOfTick = [...this.entities];
 

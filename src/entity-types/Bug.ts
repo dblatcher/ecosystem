@@ -28,7 +28,7 @@ export class Bug extends Animal {
 
         if (distance > 1) {
           this.environment?.log(
-            `${this.description} moving towards ${nearestFood.description}`
+            `${this.description} moving towards ${nearestFood.description}, ${distance.toFixed(4)} away`
           );
           return this.moveTowards(nearestFood);
         }
