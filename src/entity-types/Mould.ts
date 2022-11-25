@@ -5,7 +5,7 @@ import {
   Position,
   positionExists,
   positionsMatch,
-} from "../baseTypes";
+} from "../positions";
 import { Entity, EntityData } from "../Entity";
 
 type MouldData = EntityData & {

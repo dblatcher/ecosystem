@@ -1,4 +1,4 @@
-import { Direction, getDistance } from "../baseTypes";
+import { Direction, getDistance, getDirectionTo, displace } from "../positions";
 import { Entity, EntityData } from "../Entity";
 import { Corpse } from "./Corpse";
 import { Mould } from "./Mould";
@@ -71,25 +71,14 @@ export abstract class Animal extends Entity {
     );
   }
 
-  // To do - generalise movement to not be x,y
   moveBy(direction: Direction) {
-    this.data.position.x += direction.x;
-    this.data.position.y += direction.y;
+    this.data.position = displace(this.data.position, direction, 1)
   }
 
   moveTowards(entity: Entity) {
     // TO DO - prop path finding!
-    const { x, y } = this.data.position;
-
-    if (entity.data.position.x > x) {
-      return this.moveBy({ x: 1, y: 0 });
-    } else if (entity.data.position.x < x) {
-      return this.moveBy({ x: -1, y: 0 });
-    } else if (entity.data.position.y > y) {
-      return this.moveBy({ x: 0, y: 1 });
-    } else if (entity.data.position.y < y) {
-      return this.moveBy({ x: 0, y: -1 });
-    }
+    const direction = getDirectionTo(this.data.position, entity.data.position)
+    return this.moveBy(direction)
   }
 
   act() {

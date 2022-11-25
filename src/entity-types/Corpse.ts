@@ -1,4 +1,4 @@
-import { describePosition } from "../baseTypes";
+import { describePosition } from "../positions";
 import { EntityData, Entity } from "../Entity";
 
 export type CorpseData = EntityData & {

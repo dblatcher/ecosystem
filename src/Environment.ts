@@ -1,4 +1,4 @@
-import { Space } from "./baseTypes";
+import { Space } from "./positions";
 import { Entity } from "./Entity";
 import { Eventlogger } from "./EventLogger";
 

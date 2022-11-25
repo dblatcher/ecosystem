@@ -1,4 +1,4 @@
-import { describePosition, Position, positionExists } from "./baseTypes";
+import { describePosition, Position, positionExists } from "./positions";
 import { Environment } from "./Environment";
 
 export type EntityData = {

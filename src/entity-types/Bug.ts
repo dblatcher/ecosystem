@@ -1,4 +1,4 @@
-import { describeDirection, getDistance, getRandomDirection } from "../baseTypes";
+import { describeDirection, getDistance, getRandomDirection } from "../positions";
 import { Animal } from "./Animal";
 import { Mould } from "./Mould";
 

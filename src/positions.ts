@@ -44,3 +44,31 @@ export const describeDirection = (direction: Direction): string => {
     ? `${yWord}-${xWord}`
     : xWord || yWord || "NO DIRECTION";
 };
+
+export const getDirectionTo = (
+  start: Position,
+  target: Position
+): Direction => {
+  const dispX = target.x - start.x;
+  const dispY = target.y - start.y;
+
+  if (dispX === 0 && dispY === 0) {
+    return { x: 0, y: 0 };
+  }
+
+  if (Math.abs(dispX) > Math.abs(dispY)) {
+    return { x: Math.sign(dispX) as 1 | 0 | -1, y: 0 };
+  }
+  return { x: 0, y: Math.sign(dispY) as 1 | 0 | -1 };
+};
+
+export const displace = (
+  position: Position,
+  direction: Direction,
+  distance = 1
+): Position => {
+  return {
+    x: position.x + distance * direction.x,
+    y: position.y + distance * direction.y,
+  };
+};
