@@ -8,7 +8,6 @@ import {
 } from "../positions";
 import { Organic, OrganicData } from "./Organic";
 
-
 export class Mould extends Organic {
   ENTITY_TYPE_ID = "Mould";
   data: OrganicData;
@@ -21,9 +20,7 @@ export class Mould extends Organic {
   act() {
     this.data.energy++;
 
-    if (this.data.energy <= 0) {
-      this.leave(`Oh no! ${this.description} has starved!`);
-    } else if (this.data.energy > 5) {
+    if (this.data.energy > 5) {
       return this.reproduce();
     }
   }

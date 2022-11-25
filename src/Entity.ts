@@ -41,10 +41,11 @@ export abstract class Entity {
 
   findNearestOfClass(
     inSight: Entity[],
-    EntityClass: typeof Entity
+    EntityClasses: typeof Entity | Array<typeof Entity>
   ): undefined | Entity {
+    const listOfClasses = Array.isArray(EntityClasses) ? EntityClasses : [EntityClasses]
     return this.findNearestMatch(
-      (entity) => entity instanceof EntityClass,
+      (entity) => listOfClasses.some(EntityClass => entity instanceof EntityClass),
       inSight
     );
   }

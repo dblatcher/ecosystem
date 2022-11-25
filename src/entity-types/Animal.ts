@@ -7,7 +7,6 @@ import {
 } from "../positions";
 import { Organic, OrganicData } from "./Organic";
 import { Corpse } from "./Corpse";
-import { Mould } from "./Mould";
 import { Entity } from "../Entity";
 
 export type Target = {
@@ -25,6 +24,7 @@ export abstract class Animal extends Organic {
   ENTITY_TYPE_ID = "Animal";
   observationRange = 2;
   corpseEnergy = 1;
+  static foodTypes: typeof Organic[] = [];
 
   constructor(data: AnimalData, id?: string) {
     super(data, id);
@@ -90,7 +90,7 @@ export abstract class Animal extends Organic {
       : undefined;
   }
 
-  eatWhole(entity: Mould) {
+  eatWhole(entity: Organic) {
     this.data.energy += entity.data.energy;
     entity.leave(
       `${this.description} ate ${entity.description} and gained ${entity.data.energy} energy. E:${this.data.energy}`
@@ -107,13 +107,13 @@ export abstract class Animal extends Organic {
     return this.moveBy(direction);
   }
 
-  starve():boolean {
+  starve(): boolean {
     this.data.energy--;
 
     if (this.data.energy <= 0) {
       this.die(`Oh no! ${this.description} has starved!`);
-      return true
-    } 
-    return false
+      return true;
+    }
+    return false;
   }
 }

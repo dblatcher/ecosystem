@@ -1,7 +1,7 @@
 import { Animal } from "./entity-types/Animal";
+import { Berry } from "./entity-types/Berry";
 import { Bug } from "./entity-types/Bug";
 import { Mould } from "./entity-types/Mould";
-import { Organic } from "./entity-types/Organic";
 import { Stone } from "./entity-types/Stone";
 import { Environment } from "./Environment";
 
@@ -19,7 +19,7 @@ const environment = new Environment(
   { space: { width: 100, height: 100 }, time: 0 },
   [
     katyTheBug,
-    // unnamedBug,
+    new Berry({ position: { x: 25, y: 15 }, energy: 5 }),
     new Stone({ position: { x: 25, y: 10 } }),
     barryTheMould,
   ]
@@ -31,4 +31,3 @@ while (environment.data.time < 5) {
   environment.tick();
 }
 console.log("\n*\n**\n***");
-
