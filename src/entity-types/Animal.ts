@@ -5,35 +5,43 @@ import {
   displace,
   Position,
 } from "../positions";
-import { Entity, EntityData } from "../Entity";
+import { Organic, OrganicData } from "./Organic";
 import { Corpse } from "./Corpse";
 import { Mould } from "./Mould";
+import { Entity } from "../Entity";
 
 export type Target = {
   entityType: string;
   position: Position;
 };
 
-export type AnimalData = EntityData & {
-  energy: number;
+export type AnimalData = OrganicData & {
   direction?: Direction;
   target?: Target;
 };
 
-export abstract class Animal extends Entity {
+export abstract class Animal extends Organic {
   data: AnimalData;
   ENTITY_TYPE_ID = "Animal";
   observationRange = 2;
+  corpseEnergy = 1;
 
   constructor(data: AnimalData, id?: string) {
     super(data, id);
     this.data = data;
   }
 
-  starve() {
+  die(customMessage?: string) {
     return this.changeTo(
-      new Corpse({ ...this.data, animalType: this.ENTITY_TYPE_ID }, this.id),
-      `Oh no! ${this.description} has starved!`
+      new Corpse(
+        {
+          ...this.data,
+          energy: this.data.energy + this.corpseEnergy,
+          animalType: this.ENTITY_TYPE_ID,
+        },
+        this.id
+      ),
+      customMessage
     );
   }
 
@@ -82,7 +90,6 @@ export abstract class Animal extends Entity {
       : undefined;
   }
 
-
   eatWhole(entity: Mould) {
     this.data.energy += entity.data.energy;
     entity.leave(
@@ -100,15 +107,13 @@ export abstract class Animal extends Entity {
     return this.moveBy(direction);
   }
 
-  act() {
+  starve():boolean {
     this.data.energy--;
 
     if (this.data.energy <= 0) {
-      return this.starve();
-    } else {
-      this.environment?.log(
-        `${this.description} was at rest. E:${this.data.energy}`
-      );
-    }
+      this.die(`Oh no! ${this.description} has starved!`);
+      return true
+    } 
+    return false
   }
 }

@@ -10,6 +10,7 @@ import { Mould } from "./Mould";
 export class Bug extends Animal {
   ENTITY_TYPE_ID = "Bug";
   observationRange = 10;
+  corpseEnergy = 2;
 
   chooseTarget(thingsICanSee: Entity[]): Target | undefined {
     const { target } = this.data;
@@ -78,20 +79,19 @@ export class Bug extends Animal {
   }
 
   act() {
-    this.data.energy--;
+    const diedOfStarvation = this.starve();
+    if (diedOfStarvation) {
+      return;
+    }
 
-    if (this.data.energy <= 0) {
-      return this.starve();
+    const thingsICanSee = this.observe();
+    this.chooseTarget(thingsICanSee);
+    const prey = this.matchTarget(thingsICanSee);
+
+    if (prey) {
+      return this.hunt(prey as Mould);
     } else {
-      const thingsICanSee = this.observe();
-      this.chooseTarget(thingsICanSee);
-      const prey = this.matchTarget(thingsICanSee);
-
-      if (prey) {
-        return this.hunt(prey as Mould)
-      } else {
-        return this.search();
-      }
+      return this.search();
     }
   }
 }

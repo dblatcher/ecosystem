@@ -6,17 +6,14 @@ import {
   positionExists,
   positionsMatch,
 } from "../positions";
-import { Entity, EntityData } from "../Entity";
+import { Organic, OrganicData } from "./Organic";
 
-type MouldData = EntityData & {
-  energy: number;
-};
 
-export class Mould extends Entity {
+export class Mould extends Organic {
   ENTITY_TYPE_ID = "Mould";
-  data: MouldData;
+  data: OrganicData;
 
-  constructor(data: MouldData, id?: string) {
+  constructor(data: OrganicData, id?: string) {
     super(data, id);
     this.data = data;
   }
