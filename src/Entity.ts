@@ -1,4 +1,4 @@
-import { describePosition, Position, positionExists } from "./positions";
+import { describePosition, getDistance, Position, positionExists } from "./positions";
 import { Environment } from "./Environment";
 
 export type EntityData = {
@@ -22,6 +22,31 @@ export abstract class Entity {
     return id
       ? `${id} the ${ENTITY_TYPE_ID}${place}`
       : `${ENTITY_TYPE_ID}${place}`;
+  }
+
+
+  findNearestMatch(
+    test: { (entity: Entity): boolean },
+    entities: Entity[]
+  ): Entity | undefined {
+    const matches = entities
+      .filter(test)
+      .sort(
+        (a, b) =>
+          getDistance(b.data.position, this.data.position) -
+          getDistance(a.data.position, this.data.position)
+      );
+    return matches[0];
+  }
+
+  findNearestOfClass(
+    inSight: Entity[],
+    EntityClass: typeof Entity
+  ): undefined | Entity {
+    return this.findNearestMatch(
+      (entity) => entity instanceof EntityClass,
+      inSight
+    );
   }
 
   join(

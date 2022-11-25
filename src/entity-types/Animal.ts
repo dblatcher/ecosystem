@@ -82,19 +82,6 @@ export abstract class Animal extends Entity {
       : undefined;
   }
 
-  findNearestMatch(
-    test: { (entity: Entity): boolean },
-    entities: Entity[]
-  ): Entity | undefined {
-    const matches = entities
-      .filter(test)
-      .sort(
-        (a, b) =>
-          getDistance(b.data.position, this.data.position) -
-          getDistance(a.data.position, this.data.position)
-      );
-    return matches[0];
-  }
 
   eatWhole(entity: Mould) {
     this.data.energy += entity.data.energy;

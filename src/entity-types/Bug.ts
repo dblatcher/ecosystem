@@ -11,13 +11,6 @@ export class Bug extends Animal {
   ENTITY_TYPE_ID = "Bug";
   observationRange = 10;
 
-  findNearestFood(inSight: Entity[]) {
-    return this.findNearestMatch(
-      (entity) => entity instanceof Mould,
-      inSight
-    ) as Mould | undefined;
-  }
-
   chooseTarget(thingsICanSee: Entity[]): Target | undefined {
     const { target } = this.data;
 
@@ -37,12 +30,12 @@ export class Bug extends Animal {
       // can't see target anymore, so forget about it
       this.data.target = undefined;
 
-      const nearestFood = this.findNearestFood(thingsICanSee);
+      const nearestFood = this.findNearestOfClass(thingsICanSee, Mould);
       if (nearestFood) {
         this.setTarget(nearestFood);
       }
     } else {
-      const nearestFood = this.findNearestFood(thingsICanSee);
+      const nearestFood = this.findNearestOfClass(thingsICanSee, Mould);
       if (nearestFood) {
         this.setTarget(nearestFood);
       }

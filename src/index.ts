@@ -18,7 +18,7 @@ const environment = new Environment(
   [
     katyTheBug,
     // unnamedBug,
-    new Stone({ position: { x: 15, y: 10 } }),
+    new Stone({ position: { x: 25, y: 10 } }),
     barryTheMould,
   ]
 );
