@@ -1,11 +1,23 @@
-import { Direction, getDistance, getDirectionTo, displace } from "../positions";
+import {
+  Direction,
+  getDistance,
+  getDirectionTo,
+  displace,
+  Position,
+} from "../positions";
 import { Entity, EntityData } from "../Entity";
 import { Corpse } from "./Corpse";
 import { Mould } from "./Mould";
 
+export type Target = {
+  entityType: string;
+  position: Position;
+};
+
 export type AnimalData = EntityData & {
   energy: number;
   direction?: Direction;
+  target?: Target;
 };
 
 export abstract class Animal extends Entity {
@@ -50,6 +62,26 @@ export abstract class Animal extends Entity {
     return inSight;
   }
 
+  setTarget(entity: Entity): Target {
+    const target = {
+      position: entity.data.position,
+      entityType: entity.ENTITY_TYPE_ID,
+    };
+    this.data.target = target;
+    return target;
+  }
+
+  matchTarget(entities: Entity[]): Entity | undefined {
+    const { target } = this.data;
+    return target
+      ? entities.find(
+          (thing) =>
+            thing.ENTITY_TYPE_ID === target.entityType &&
+            getDistance(target.position, thing.data.position) === 0
+        )
+      : undefined;
+  }
+
   findNearestMatch(
     test: { (entity: Entity): boolean },
     entities: Entity[]
@@ -72,13 +104,13 @@ export abstract class Animal extends Entity {
   }
 
   moveBy(direction: Direction) {
-    this.data.position = displace(this.data.position, direction, 1)
+    this.data.position = displace(this.data.position, direction, 1);
   }
 
   moveTowards(entity: Entity) {
     // TO DO - prop path finding!
-    const direction = getDirectionTo(this.data.position, entity.data.position)
-    return this.moveBy(direction)
+    const direction = getDirectionTo(this.data.position, entity.data.position);
+    return this.moveBy(direction);
   }
 
   act() {
