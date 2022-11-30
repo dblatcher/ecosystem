@@ -1,6 +1,8 @@
 import { h, Component, Fragment } from "preact";
 import { Environment } from "../../../Environment";
 import { Mould } from "../../../entity-types/Mould";
+import { Bug } from "../../../entity-types/Bug";
+import EnvironmentGrid from "./EnvironmentGrid";
 
 const makeEnvironment = (): Environment => {
   return new Environment(
@@ -8,11 +10,14 @@ const makeEnvironment = (): Environment => {
       space: { width: 10, height: 10 },
       time: 0,
     },
-    [new Mould({ energy: 4, position: { x: 5, y: 5 } })]
+    [
+      new Mould({ energy: 4, position: { x: 5, y: 5 } }),
+      new Bug({ energy: 15, position: { x: 0, y: 2 } }),
+    ]
   );
 };
 
-export default class Grid extends Component {
+export default class GridContainer extends Component {
   environment?: Environment;
 
   constructor(props: {}) {
@@ -21,15 +26,13 @@ export default class Grid extends Component {
   }
 
   tickEnviroment() {
-    console.log(this.environment?.data.time);
     this.environment?.tick();
-    this.forceUpdate()
+    this.forceUpdate();
   }
 
   render() {
     return (
       <div>
-        <p>Grid</p>
         {!!this.environment && (
           <>
             <p>
@@ -43,6 +46,7 @@ export default class Grid extends Component {
                 .map((entity) => entity.description)
                 .join()}
             </p>
+            <EnvironmentGrid environment={this.environment} />
             <button onClick={this.tickEnviroment}>tick</button>
           </>
         )}
