@@ -1,23 +1,38 @@
 import { h, Component, Fragment } from "preact";
 import { Environment } from "../../../Environment";
 import EnvironmentGrid from "./EnvironmentGrid";
-import {makeEnvironment} from "../../../testEcosystem";
+import { makeEnvironment } from "../../../testEcosystem";
 
+// eslint-disable-next-line @typescript-eslint/ban-types
+type Props = {};
+type State = {
+  log: string[];
+};
 
-export default class GridContainer extends Component {
+export default class GridContainer extends Component<Props, State> {
   environment?: Environment;
 
   constructor(props: Record<string, never>) {
     super(props);
+    this.state = {
+      log: [],
+    };
     this.tickEnviroment = this.tickEnviroment.bind(this);
   }
 
   tickEnviroment() {
-    this.environment?.tick();
+    if (!this.environment) {
+      return;
+    }
+    const newLogs = this.environment.tick();
+    this.setState((state) => ({
+      log: [...state.log, ...newLogs],
+    }));
     this.forceUpdate();
   }
 
   render() {
+    const { log } = this.state;
     return (
       <div>
         {!!this.environment && (
@@ -37,7 +52,12 @@ export default class GridContainer extends Component {
             <button onClick={this.tickEnviroment}>tick</button>
           </>
         )}
-        {!this.environment && <p>non</p>}
+
+        <ul>
+          {log.map((entry, index) => (
+            <li key={index}>{entry}</li>
+          ))}
+        </ul>
       </div>
     );
   }

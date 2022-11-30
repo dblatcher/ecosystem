@@ -1,6 +1,6 @@
 import { Space } from "./positions";
 import { Entity } from "./Entity";
-import { Eventlogger } from "./EventLogger";
+import { EventConsoleLogger } from "./EventLogger";
 
 export type EnvironmentData = {
   space: Space;
@@ -10,20 +10,24 @@ export type EnvironmentData = {
 export class Environment {
   data: EnvironmentData;
   entities: Entity[];
-  private eventLogger: Eventlogger;
+  private eventLogger: EventConsoleLogger;
+  private eventsLastTick: string[];
 
   constructor(data: EnvironmentData, entities: Entity[] = []) {
     this.data = data;
     this.entities = [];
-    this.eventLogger = new Eventlogger();
+    this.eventLogger = new EventConsoleLogger();
+    this.eventsLastTick = [];
     entities.forEach((entity) => entity.join(this));
   }
 
   public log(info: string) {
     this.eventLogger.report(info);
+    this.eventsLastTick.push(info);
   }
 
-  tick() {
+  tick(): string[] {
+    this.eventsLastTick.splice(0, this.eventsLastTick.length);
     this.data.time++;
     this.log(`\nTIME: ${this.data.time}`);
 
@@ -34,5 +38,7 @@ export class Environment {
         entity.act();
       }
     });
+
+    return this.eventsLastTick;
   }
 }
