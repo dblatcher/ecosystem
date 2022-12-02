@@ -1,4 +1,9 @@
-import { describePosition, getDistance, Position, positionExists } from "./positions";
+import {
+  describePosition,
+  getDistance,
+  Position,
+  positionExists,
+} from "./positions";
 import { Environment } from "./Environment";
 
 export type EntityData = {
@@ -24,7 +29,6 @@ export abstract class Entity {
       : `${ENTITY_TYPE_ID}${place}`;
   }
 
-
   findNearestMatch(
     test: { (entity: Entity): boolean },
     entities: Entity[]
@@ -43,9 +47,12 @@ export abstract class Entity {
     inSight: Entity[],
     EntityClasses: typeof Entity | Array<typeof Entity>
   ): undefined | Entity {
-    const listOfClasses = Array.isArray(EntityClasses) ? EntityClasses : [EntityClasses]
+    const listOfClasses = Array.isArray(EntityClasses)
+      ? EntityClasses
+      : [EntityClasses];
     return this.findNearestMatch(
-      (entity) => listOfClasses.some(EntityClass => entity instanceof EntityClass),
+      (entity) =>
+        listOfClasses.some((EntityClass) => entity instanceof EntityClass),
       inSight
     );
   }
@@ -104,6 +111,10 @@ export abstract class Entity {
     environment.log(
       customMessage || `${this.description} changed to ${newEntity.description}`
     );
+  }
+
+  report(message: string) {
+    return this.environment?.log(message);
   }
 
   act() {}
