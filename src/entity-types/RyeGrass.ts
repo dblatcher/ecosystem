@@ -1,4 +1,9 @@
-import { describePosition, displace, getRandomDirection } from "../positions";
+import {
+  describePosition,
+  displace,
+  getRandomDirection,
+  Position,
+} from "../positions";
 import { Organic, OrganicData } from "./Organic";
 
 type Leaf = {
@@ -14,11 +19,14 @@ export interface RyeGrassData extends OrganicData {
   leaves: Leaf[];
   seeds: Seed[];
   stalkHeight: number;
+  timeToGerminate: number;
 }
 
 export class RyeGrass extends Organic {
   ENTITY_TYPE_ID = "RyeGrass";
   data: RyeGrassData;
+
+  static GERMINATION_TIME = 10;
 
   minHeightForLeaves = 4;
   maxLeafSize = 5;
@@ -42,14 +50,46 @@ export class RyeGrass extends Organic {
       .reduce((p, c) => p + c, 0);
   }
 
-  act(): void {
-    this.photosynthesise();
-    this.feedSeeds();
-    this.grow();
+  get hasGerminated(): boolean {
+    return this.data.timeToGerminate <= 0;
+  }
 
-    const wind = this.environment?.getWindAt(this.data.position);
-    if (wind && wind?.speed > 2) {
-      this.releaseSeeds();
+  static makeLooseSeed(seed: Seed, position: Position): RyeGrass {
+    return new RyeGrass({
+      position,
+      leaves: [],
+      seeds: [],
+      energy: seed.energy,
+      stalkHeight: 0,
+      timeToGerminate: RyeGrass.GERMINATION_TIME,
+    });
+  }
+
+  act(): void {
+    if (this.hasGerminated) {
+      this.photosynthesise();
+      this.feedSeeds();
+      this.grow();
+
+      const wind = this.environment?.getWindAt(this.data.position);
+      if (wind && wind?.speed > 2) {
+        this.releaseSeeds();
+      }
+    } else {
+      this.germinate();
+    }
+  }
+
+  germinate() {
+    if (this.data.timeToGerminate > 0) {
+      this.data.timeToGerminate--;
+      if (this.data.timeToGerminate <= 0) {
+        this.report(
+          `${this.ENTITY_TYPE_ID} seed at ${describePosition(
+            this.data.position
+          )} has germinated.`
+        );
+      }
     }
   }
 
@@ -168,11 +208,11 @@ export class RyeGrass extends Organic {
 
   releaseSeeds() {
     const { environment } = this;
-    const { seeds } = this.data;
+    const { seeds, position } = this.data;
     if (!environment) {
       return;
     }
-    const wind = environment.getWindAt(this.data.position);
+    const wind = environment.getWindAt(position);
     const ripeSeeds = seeds.filter(
       (seed) => seed.energy >= this.ripeSeedEnergy
     );
@@ -182,28 +222,34 @@ export class RyeGrass extends Organic {
 
     seeds.splice(0, seeds.length, ...remainingSeeds);
     ripeSeeds.forEach((seed) => {
+      const landingPosition = displace(
+        displace(position, wind?.direction, wind?.speed * 2),
+        getRandomDirection(),
+        Math.ceil(wind.speed / 2)
+      );
 
-      const newPlant = new RyeGrass({
-        position: displace(displace(this.data.position, wind?.direction, wind?.speed*2), getRandomDirection(), Math.ceil(wind.speed/2)),
-        leaves: [],
-        seeds: [],
-        energy: seed.energy,
-        stalkHeight: 0,
-      });
+      const looseSeed = RyeGrass.makeLooseSeed(seed, landingPosition);
 
-      this.report(`${this.description} released a seed to ${describePosition(newPlant.data.position)}.`)
-      newPlant.join(environment);
+      this.report(
+        `${this.description} released a seed to ${describePosition(
+          looseSeed.data.position
+        )}.`
+      );
+      looseSeed.join(environment);
     });
   }
 
   get description(): string {
-    const { ENTITY_TYPE_ID, id } = this;
+    const { ENTITY_TYPE_ID, id, hasGerminated } = this;
     const name = id ? `${id} the ` : "";
     const height = `${this.data.stalkHeight} inch `;
+    const type = hasGerminated
+      ? `${height}${ENTITY_TYPE_ID}`
+      : `${ENTITY_TYPE_ID} seed.`;
     const leafCount = `(${this.data.leaves.length} leaves)`;
     const seedCount = `(${this.data.seeds.length} seeds)`;
     const place = describePosition(this.data.position);
 
-    return `${name}${height}${ENTITY_TYPE_ID} ${leafCount}${seedCount}${place}`;
+    return `${name}${type} ${leafCount}${seedCount}${place}`;
   }
 }
