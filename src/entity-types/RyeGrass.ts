@@ -4,30 +4,16 @@ import {
   getRandomDirection,
   Position,
 } from "../positions";
-import { Organic, OrganicData } from "./Organic";
+import { Plant, PlantData } from "./Plant";
+import type { Seed } from "./Plant";
 
-type Leaf = {
-  surface: number;
-  energy: number;
-};
+export interface RyeGrassData extends PlantData {}
 
-type Seed = {
-  energy: number;
-};
-
-export interface RyeGrassData extends OrganicData {
-  leaves: Leaf[];
-  seeds: Seed[];
-  stalkHeight: number;
-  timeToGerminate: number;
-}
-
-export class RyeGrass extends Organic {
+export class RyeGrass extends Plant {
   ENTITY_TYPE_ID = "RyeGrass";
   data: RyeGrassData;
 
-  static GERMINATION_TIME = 10;
-
+  static GERMINATION_TIME = 12;
   minHeightForLeaves = 4;
   maxLeafSize = 5;
   maxLeaves = 4;
@@ -42,16 +28,6 @@ export class RyeGrass extends Organic {
   constructor(data: RyeGrassData, id?: string) {
     super(data, id);
     this.data = data;
-  }
-
-  private get totalLeafSurface(): number {
-    return this.data.leaves
-      .map((leaf) => leaf.surface)
-      .reduce((p, c) => p + c, 0);
-  }
-
-  get hasGerminated(): boolean {
-    return this.data.timeToGerminate <= 0;
   }
 
   static makeLooseSeed(seed: Seed, position: Position): RyeGrass {
@@ -80,20 +56,7 @@ export class RyeGrass extends Organic {
     }
   }
 
-  germinate() {
-    if (this.data.timeToGerminate > 0) {
-      this.data.timeToGerminate--;
-      if (this.data.timeToGerminate <= 0) {
-        this.report(
-          `${this.ENTITY_TYPE_ID} seed at ${describePosition(
-            this.data.position
-          )} has germinated.`
-        );
-      }
-    }
-  }
-
-  grow() {
+  grow(): void {
     const { energy, stalkHeight, leaves, seeds } = this.data;
     const shouldGrowLeaves =
       leaves.length > 0 &&
@@ -192,20 +155,6 @@ export class RyeGrass extends Organic {
     );
   }
 
-  photosynthesise() {
-    const { leaves, position } = this.data;
-    if (this.environment?.isSunlightAt(position)) {
-      const glucose = this.totalLeafSurface * 0.25;
-
-      this.data.energy += glucose;
-      this.report(
-        `${this.description} got ${glucose.toFixed(4)} energy from its ${
-          leaves.length
-        } leaves, now has ${this.data.energy}.`
-      );
-    }
-  }
-
   releaseSeeds() {
     const { environment } = this;
     const { seeds, position } = this.data;
@@ -237,19 +186,5 @@ export class RyeGrass extends Organic {
       );
       looseSeed.join(environment);
     });
-  }
-
-  get description(): string {
-    const { ENTITY_TYPE_ID, id, hasGerminated } = this;
-    const name = id ? `${id} the ` : "";
-    const height = `${this.data.stalkHeight} inch `;
-    const type = hasGerminated
-      ? `${height}${ENTITY_TYPE_ID}`
-      : `${ENTITY_TYPE_ID} seed.`;
-    const leafCount = `(${this.data.leaves.length} leaves)`;
-    const seedCount = `(${this.data.seeds.length} seeds)`;
-    const place = describePosition(this.data.position);
-
-    return `${name}${type} ${leafCount}${seedCount}${place}`;
   }
 }
