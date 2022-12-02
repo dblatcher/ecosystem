@@ -25,8 +25,8 @@ export default class GridContainer extends Component<Props, State> {
       return;
     }
     const newLogs = this.environment.tick();
-    this.setState((state) => ({
-      log: [...state.log, ...newLogs],
+    this.setState(() => ({
+      log: [...newLogs],
     }));
     this.forceUpdate();
   }

@@ -20,6 +20,7 @@ const EntityFigure = ({ entity }: Props) => {
         width: `${2}rem`,
         height: `${2}rem`,
         fontSize: "200%",
+        margin: 0,
       }}
     >
       {entity.ENTITY_TYPE_ID.substring(0, 1)}
