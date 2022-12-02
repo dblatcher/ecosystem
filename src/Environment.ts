@@ -1,6 +1,7 @@
-import { Space } from "./positions";
+import { Space, Position } from "./positions";
 import { Entity } from "./Entity";
 import { EventConsoleLogger } from "./EventLogger";
+import type { Direction } from "./positions";
 
 export type EnvironmentData = {
   space: Space;
@@ -24,6 +25,17 @@ export class Environment {
   public log(info: string) {
     this.eventLogger.report(info);
     this.eventsLastTick.push(info);
+  }
+
+  isSunlightAt(position: Position): boolean {
+    return true;
+  }
+
+  getWindAt(position: Position): { direction: Direction; speed: number } {
+    return {
+      direction: { x: 0, y: 1 },
+      speed: 3,
+    };
   }
 
   tick(): string[] {
