@@ -8,20 +8,33 @@ export abstract class EventLogger {
     this.eventsLastTick = [];
   }
   abstract handleReport(info: EventReport): void;
-  clearEventsLastTick () {
-    this.eventsLastTick.splice(0,this.eventsLastTick.length)
+  clearEventsLastTick() {
+    this.eventsLastTick.splice(0, this.eventsLastTick.length);
   }
 }
 
 export class EventConsoleLogger extends EventLogger {
   handleReport(report: EventReport) {
     console.log(report);
-    this.eventsLastTick.push(report)
+    this.eventsLastTick.push(report);
   }
 }
 
 export class SilentEventLogger extends EventLogger {
+  shouldInclude: { (from: EventReport): boolean };
+
+  constructor(filter?: { (report: EventReport): boolean }) {
+    super();
+    this.shouldInclude =
+      filter ||
+      function () {
+        return true;
+      };
+  }
+
   handleReport(report: EventReport) {
-    this.eventsLastTick.push(report)
+    if (this.shouldInclude(report)) {
+      this.eventsLastTick.push(report);
+    }
   }
 }

@@ -1,3 +1,4 @@
+import { Animal } from "./entity-types/Animal";
 import { Bug } from "./entity-types/Bug";
 import { RyeGrass } from "./entity-types/RyeGrass";
 import { Environment } from "./Environment";
@@ -37,7 +38,9 @@ export const makeEnvironment = (): Environment => {
       }),
     ],
     {
-      logger: new SilentEventLogger(),
+      logger: new SilentEventLogger(
+        (report) => !!report.from && report.from instanceof Animal
+      ),
     }
   );
 };
