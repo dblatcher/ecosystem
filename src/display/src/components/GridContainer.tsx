@@ -34,30 +34,26 @@ export default class GridContainer extends Component<Props, State> {
   render() {
     const { log } = this.state;
     return (
-      <div>
+      <div style={{ display: "flex" }}>
         {!!this.environment && (
-          <>
+          <section>
             <p>
               squares ={" "}
               {this.environment.data.space.height *
                 this.environment.data.space.width}
             </p>
-            <p>
-              things ={" "}
-              {this.environment?.entities
-                .map((entity) => entity.description)
-                .join()}
-            </p>
             <EnvironmentGrid environment={this.environment} />
-            <button onClick={this.tickEnviroment}>tick</button>
-          </>
+          </section>
         )}
 
-        <ul>
-          {log.map((entry, index) => (
-            <li key={index}>{entry}</li>
-          ))}
-        </ul>
+        <section>
+          <ul>
+            {log.map((entry, index) => (
+              <li key={index}>{entry}</li>
+            ))}
+          </ul>
+          <button onClick={this.tickEnviroment}>tick</button>
+        </section>
       </div>
     );
   }
