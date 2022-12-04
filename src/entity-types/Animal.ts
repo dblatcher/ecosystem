@@ -60,7 +60,7 @@ export abstract class Animal extends Organic {
       );
 
     if (report) {
-      this.environment?.log(
+      this.report(
         `${this.description} can see: ${inSight
           .map((e) => `\n - ${e.description}`)
           .join()}`

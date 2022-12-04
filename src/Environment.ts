@@ -1,11 +1,15 @@
 import { Space, Position } from "./positions";
 import { Entity } from "./Entity";
-import { EventConsoleLogger } from "./EventLogger";
+import { EventConsoleLogger, EventLogger, EventReport } from "./EventLogger";
 import type { Direction } from "./positions";
 
 export type EnvironmentData = {
   space: Space;
   time: number;
+};
+
+type EnvironmentConfig = {
+  logger?: EventLogger;
 };
 
 export class Environment {
@@ -14,17 +18,21 @@ export class Environment {
   private eventLogger: EventConsoleLogger;
   private eventsLastTick: string[];
 
-  constructor(data: EnvironmentData, entities: Entity[] = []) {
+  constructor(
+    data: EnvironmentData,
+    entities: Entity[] = [],
+    config: EnvironmentConfig = {}
+  ) {
     this.data = data;
     this.entities = [];
-    this.eventLogger = new EventConsoleLogger();
+    this.eventLogger = config.logger || new EventConsoleLogger();
     this.eventsLastTick = [];
     entities.forEach((entity) => entity.join(this));
   }
 
-  public log(info: string) {
-    this.eventLogger.report(info);
-    this.eventsLastTick.push(info);
+  public log(report: EventReport) {
+    this.eventLogger.report(report);
+    this.eventsLastTick.push(report.message);
   }
 
   isSunlightAt(position: Position): boolean {
@@ -41,7 +49,7 @@ export class Environment {
   tick(): string[] {
     this.eventsLastTick.splice(0, this.eventsLastTick.length);
     this.data.time++;
-    this.log(`\nTIME: ${this.data.time}`);
+    this.log({ message: `\nTIME: ${this.data.time}` });
 
     const entitiesThatExistedAtStartOfTick = [...this.entities];
 

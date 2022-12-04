@@ -68,7 +68,7 @@ export abstract class Entity {
 
     const position = newPosition || this.data.position;
     if (!positionExists(position, environment.data.space)) {
-      environment.log(
+      this.report(
         `${this.description} cannot join at ${describePosition(
           position
         )} as that place does not exist.`
@@ -79,7 +79,7 @@ export abstract class Entity {
     environment.entities.push(this);
     this.environment = environment;
     this.data.position = position;
-    this.environment.log(customMessage || `${this.description} has joined.`);
+    this.report(customMessage || `${this.description} has joined.`);
   }
 
   leave(customMessage?: string) {
@@ -93,7 +93,7 @@ export abstract class Entity {
     }
     environment.entities.splice(index, 1);
     this.environment = undefined;
-    environment.log(customMessage || `${this.description} has left.`);
+    this.report(customMessage || `${this.description} has left.`);
   }
 
   changeTo(newEntity: Entity, customMessage?: string) {
@@ -108,13 +108,13 @@ export abstract class Entity {
     environment.entities.splice(index, 1, newEntity);
     newEntity.environment = environment;
     this.environment = undefined;
-    environment.log(
+    this.report(
       customMessage || `${this.description} changed to ${newEntity.description}`
     );
   }
 
   report(message: string) {
-    return this.environment?.log(message);
+    return this.environment?.log({ message, from: this });
   }
 
   act() {}

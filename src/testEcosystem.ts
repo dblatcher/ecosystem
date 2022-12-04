@@ -1,5 +1,7 @@
+import { Bug } from "./entity-types/Bug";
 import { RyeGrass } from "./entity-types/RyeGrass";
 import { Environment } from "./Environment";
+import { SilentEventLogger } from "./EventLogger";
 
 export const makeEnvironment = (): Environment => {
   return new Environment(
@@ -9,7 +11,7 @@ export const makeEnvironment = (): Environment => {
     },
     [
       // new Mould({ energy: 4, position: { x: 5, y: 5 } }),
-      // new Bug({ energy: 15, position: { x: 0, y: 2 } }),
+      new Bug({ energy: 15, position: { x: 0, y: 2 } }),
 
       // new RyeGrass({
       //   energy: 15,
@@ -33,6 +35,9 @@ export const makeEnvironment = (): Environment => {
         seeds: [{ energy: 15 }],
         timeToGerminate: 0,
       }),
-    ]
+    ],
+    {
+      logger: new SilentEventLogger(),
+    }
   );
 };

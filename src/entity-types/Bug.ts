@@ -49,14 +49,14 @@ export class Bug extends Animal {
   search() {
     if (!this.data.direction) {
       this.data.direction = getRandomDirection();
-      this.environment?.log(
+      this.report(
         `${this.description} saw no food, so it turned to ${describeDirection(
           this.data.direction
         )}`
       );
     }
     this.moveBy(this.data.direction || { x: 0, y: 0 });
-    this.environment?.log(
+    this.report(
       `${this.description} kept going ${describeDirection(
         this.data.direction
       )} in search of food`
@@ -68,7 +68,7 @@ export class Bug extends Animal {
     const distance = getDistance(food.data.position, this.data.position);
 
     if (distance > 1) {
-      this.environment?.log(
+      this.report(
         `${this.description} moving towards ${
           food.description
         }, ${distance.toFixed(4)} away`

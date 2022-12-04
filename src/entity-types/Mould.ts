@@ -45,7 +45,7 @@ export class Mould extends Organic {
       );
 
       if (otherEntity) {
-        environment.log(
+        this.report(
           `${this.description} sent a spore to ${describeDirection(
             direction
           )} but ${otherEntity.description} was already there.`
@@ -60,7 +60,7 @@ export class Mould extends Organic {
         );
       }
     } else {
-      environment.log(
+      this.report(
         `${this.description} sent a spore off the edge of the world.`
       );
     }
