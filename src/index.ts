@@ -1,4 +1,4 @@
-import { Animal } from "./entity-types/Animal";
+import { Animal } from "./abstract-entities/Animal";
 import { Berry } from "./entity-types/Berry";
 import { Bug } from "./entity-types/Bug";
 import { Mould } from "./entity-types/Mould";

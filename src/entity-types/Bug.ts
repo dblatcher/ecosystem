@@ -4,10 +4,10 @@ import {
   getDistance,
   getRandomDirection,
 } from "../positions";
-import { Animal, Target } from "./Animal";
+import { Animal, Target } from "../abstract-entities/Animal";
 import { Berry } from "./Berry";
 import { Mould } from "./Mould";
-import { Organic } from "./Organic";
+import { Organic } from "../abstract-entities/Organic";
 
 export class Bug extends Animal {
   ENTITY_TYPE_ID = "Bug";

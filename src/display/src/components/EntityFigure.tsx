@@ -1,6 +1,6 @@
 import { h, Fragment } from "preact";
 import { Entity } from "../../../Entity";
-import { Plant } from "../../../entity-types/Plant";
+import { Plant } from "../../../abstract-entities/Plant";
 
 interface Props {
   entity: Entity;

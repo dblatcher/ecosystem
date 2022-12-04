@@ -1,4 +1,4 @@
-import { Animal } from "./entity-types/Animal";
+import { Animal } from "./abstract-entities/Animal";
 import { Bug } from "./entity-types/Bug";
 import { RyeGrass, RyeSeed } from "./entity-types/RyeGrass";
 import { Environment } from "./Environment";

@@ -6,7 +6,7 @@ import {
   Position,
 } from "../positions";
 import { Organic, OrganicData } from "./Organic";
-import { Corpse } from "./Corpse";
+import { Corpse } from "../entity-types/Corpse";
 import { Entity } from "../Entity";
 
 export type Target = {

@@ -1,4 +1,4 @@
-import { Organic, OrganicData } from "./Organic";
+import { Organic, OrganicData } from "../abstract-entities/Organic";
 
 export class Berry extends Organic {
   ENTITY_TYPE_ID = "Berry";

@@ -6,7 +6,7 @@ import {
   positionExists,
   positionsMatch,
 } from "../positions";
-import { Organic, OrganicData } from "./Organic";
+import { Organic, OrganicData } from "../abstract-entities/Organic";
 
 export class Mould extends Organic {
   ENTITY_TYPE_ID = "Mould";

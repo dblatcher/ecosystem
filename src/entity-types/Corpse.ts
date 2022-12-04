@@ -1,5 +1,5 @@
 import { describePosition } from "../positions";
-import { Organic, OrganicData } from "./Organic";
+import { Organic, OrganicData } from "../abstract-entities/Organic";
 
 export type CorpseData = OrganicData & {
   animalType: string;

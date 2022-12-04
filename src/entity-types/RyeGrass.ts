@@ -4,9 +4,9 @@ import {
   getRandomDirection,
   Position,
 } from "../positions";
-import { Plant, PlantData } from "./Plant";
-import type { GrowingSeed } from "./Plant";
-import { Seed, SeedData } from "./Seed";
+import { Plant, PlantData } from "../abstract-entities/Plant";
+import type { GrowingSeed } from "../abstract-entities/Plant";
+import { Seed, SeedData } from "../abstract-entities/Seed";
 
 
 export class RyeSeed extends Seed {
