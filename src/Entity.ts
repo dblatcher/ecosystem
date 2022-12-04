@@ -114,7 +114,7 @@ export abstract class Entity {
   }
 
   report(message: string) {
-    return this.environment?.log({ message, from: this });
+    return this.environment?.receiveReport({ message, from: this });
   }
 
   act() {}

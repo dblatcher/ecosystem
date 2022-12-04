@@ -1,4 +1,4 @@
-import { h, Component, Fragment } from "preact";
+import { h, Component } from "preact";
 import { Environment } from "../../../Environment";
 import EnvironmentGrid from "./EnvironmentGrid";
 import { makeEnvironment } from "../../../testEcosystem";
@@ -24,11 +24,11 @@ export default class GridContainer extends Component<Props, State> {
     if (!this.environment) {
       return;
     }
-    const newLogs = this.environment.tick();
-    this.setState(() => ({
-      log: [...newLogs],
-    }));
-    this.forceUpdate();
+    this.environment.tick();
+    const newLogs = this.environment.eventLogger.eventsLastTick.map(
+      (report) => report.message
+    );
+    this.setState({ log: newLogs });
   }
 
   render() {

@@ -15,8 +15,7 @@ type EnvironmentConfig = {
 export class Environment {
   data: EnvironmentData;
   entities: Entity[];
-  private eventLogger: EventConsoleLogger;
-  private eventsLastTick: string[];
+  eventLogger: EventConsoleLogger;
 
   constructor(
     data: EnvironmentData,
@@ -26,13 +25,11 @@ export class Environment {
     this.data = data;
     this.entities = [];
     this.eventLogger = config.logger || new EventConsoleLogger();
-    this.eventsLastTick = [];
     entities.forEach((entity) => entity.join(this));
   }
 
-  public log(report: EventReport) {
-    this.eventLogger.report(report);
-    this.eventsLastTick.push(report.message);
+  public receiveReport(report: EventReport) {
+    this.eventLogger.handleReport(report);
   }
 
   isSunlightAt(position: Position): boolean {
@@ -46,10 +43,10 @@ export class Environment {
     };
   }
 
-  tick(): string[] {
-    this.eventsLastTick.splice(0, this.eventsLastTick.length);
+  tick():void {
+    this.eventLogger.clearEventsLastTick();
     this.data.time++;
-    this.log({ message: `\nTIME: ${this.data.time}` });
+    this.receiveReport({ message: `\nTIME: ${this.data.time}` });
 
     const entitiesThatExistedAtStartOfTick = [...this.entities];
 
@@ -59,6 +56,5 @@ export class Environment {
       }
     });
 
-    return this.eventsLastTick;
   }
 }
