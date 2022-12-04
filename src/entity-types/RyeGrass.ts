@@ -5,7 +5,30 @@ import {
   Position,
 } from "../positions";
 import { Plant, PlantData } from "./Plant";
-import type { Seed } from "./Plant";
+import type { GrowingSeed } from "./Plant";
+import { Seed, SeedData } from "./Seed";
+
+
+export class RyeSeed extends Seed {
+  ENTITY_TYPE_ID = "RyeSeed";
+  SeedOf = RyeGrass;
+  data: SeedData;
+
+  constructor(data: SeedData, id?: string) {
+    super(data, id);
+    this.data = data;
+  }
+
+  makeNewPlant(): Plant {
+    return new this.SeedOf({
+      position: this.data.position,
+      energy: this.data.energy,
+      leaves: [],
+      seeds: [],
+      stalkHeight: 0,
+    });
+  }
+}
 
 export interface RyeGrassData extends PlantData {}
 
@@ -30,29 +53,22 @@ export class RyeGrass extends Plant {
     this.data = data;
   }
 
-  static makeLooseSeed(seed: Seed, position: Position): RyeGrass {
-    return new RyeGrass({
+  static makeLooseSeed(seed: GrowingSeed, position: Position): RyeSeed {
+    return new RyeSeed({
       position,
-      leaves: [],
-      seeds: [],
       energy: seed.energy,
-      stalkHeight: 0,
       timeToGerminate: RyeGrass.GERMINATION_TIME,
     });
   }
 
   act(): void {
-    if (this.hasGerminated) {
-      this.photosynthesise();
-      this.feedSeeds();
-      this.grow();
+    this.photosynthesise();
+    this.feedSeeds();
+    this.grow();
 
-      const wind = this.environment?.getWindAt(this.data.position);
-      if (wind && wind?.speed > 2) {
-        this.releaseSeeds();
-      }
-    } else {
-      this.germinate();
+    const wind = this.environment?.getWindAt(this.data.position);
+    if (wind && wind?.speed > 2) {
+      this.releaseSeeds();
     }
   }
 

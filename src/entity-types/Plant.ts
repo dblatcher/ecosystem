@@ -1,31 +1,26 @@
-import {
-  describePosition,
-  Position,
-} from "../positions";
+import { describePosition, Position } from "../positions";
 import { Organic, OrganicData } from "./Organic";
+import type { Seed } from "./Seed";
 
 export type Leaf = {
   surface: number;
   energy: number;
 };
 
-export type Seed = {
+export type GrowingSeed = {
   energy: number;
 };
 
 export interface PlantData extends OrganicData {
   leaves: Leaf[];
-  seeds: Seed[];
+  seeds: GrowingSeed[];
   stalkHeight: number;
-  timeToGerminate: number;
 }
 
 export abstract class Plant extends Organic {
   ENTITY_TYPE_ID = "Plant";
   data: PlantData;
-
   static GERMINATION_TIME = 10;
-
   constructor(data: PlantData, id?: string) {
     super(data, id);
     this.data = data;
@@ -37,28 +32,9 @@ export abstract class Plant extends Organic {
       .reduce((p, c) => p + c, 0);
   }
 
-  get hasGerminated(): boolean {
-    return this.data.timeToGerminate <= 0;
-  }
+  static makeLooseSeed: { (seed: GrowingSeed, position: Position): Seed };
 
-  static makeLooseSeed: { (seed: Seed, position: Position): Plant };
-
-  germinate() {
-    if (this.data.timeToGerminate > 0) {
-      this.data.timeToGerminate--;
-      if (this.data.timeToGerminate <= 0) {
-        this.report(
-          `${this.ENTITY_TYPE_ID} seed at ${describePosition(
-            this.data.position
-          )} has germinated.`
-        );
-      }
-    }
-  }
-
-  abstract grow():void
-
-
+  abstract grow(): void;
 
   photosynthesise() {
     const { leaves, position } = this.data;
@@ -75,12 +51,10 @@ export abstract class Plant extends Organic {
   }
 
   get description(): string {
-    const { ENTITY_TYPE_ID, id, hasGerminated } = this;
+    const { ENTITY_TYPE_ID, id } = this;
     const name = id ? `${id} the ` : "";
     const height = `${this.data.stalkHeight} inch `;
-    const type = hasGerminated
-      ? `${height}${ENTITY_TYPE_ID}`
-      : `${ENTITY_TYPE_ID} seed.`;
+    const type = `${height}${ENTITY_TYPE_ID}`;
     const leafCount = `(${this.data.leaves.length} leaves)`;
     const seedCount = `(${this.data.seeds.length} seeds)`;
     const place = describePosition(this.data.position);

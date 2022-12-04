@@ -107,10 +107,12 @@ export abstract class Entity {
     }
     environment.entities.splice(index, 1, newEntity);
     newEntity.environment = environment;
-    this.environment = undefined;
+
+    // have to call report before removing environment from the original Entity
     this.report(
       customMessage || `${this.description} changed to ${newEntity.description}`
     );
+    this.environment = undefined;
   }
 
   report(message: string) {
