@@ -1,7 +1,7 @@
 import { Animal } from "../abstract-entities/Animal";
 import { Organic } from "../abstract-entities/Organic";
 import { Seed } from "../abstract-entities/Seed";
-import { getRandomDirection, describeDirection, getDistance } from "../positions";
+import { searchInOneRandomDirection } from "../traits/animal-traits";
 
 export class Chicken extends Animal {
   ENTITY_TYPE_ID = "Chicken";
@@ -9,22 +9,7 @@ export class Chicken extends Animal {
   foodTypes = [Seed];
   observationRange = 10;
 
-  searchForFood() {
-    if (!this.data.direction) {
-      this.data.direction = getRandomDirection();
-      this.report(
-        `${this.description} saw no food, so it turned to ${describeDirection(
-          this.data.direction
-        )}`
-      );
-    }
-    this.moveBy(this.data.direction || { x: 0, y: 0 });
-    this.report(
-      `${this.description} kept going ${describeDirection(
-        this.data.direction
-      )} in search of food`
-    );
-  }
+  searchForFood = searchInOneRandomDirection(this);
 
   act() {
     const diedOfStarvation = this.starve();
@@ -42,5 +27,4 @@ export class Chicken extends Animal {
       return this.searchForFood();
     }
   }
-
 }

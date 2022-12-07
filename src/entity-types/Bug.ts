@@ -1,13 +1,8 @@
-import { Entity } from "../Entity";
-import {
-  describeDirection,
-  getDistance,
-  getRandomDirection,
-} from "../positions";
-import { Animal, Target } from "../abstract-entities/Animal";
+import { Animal } from "../abstract-entities/Animal";
 import { Berry } from "./Berry";
 import { Mould } from "./Mould";
 import { Organic } from "../abstract-entities/Organic";
+import { searchInOneRandomDirection } from "../traits/animal-traits";
 
 export class Bug extends Animal {
   ENTITY_TYPE_ID = "Bug";
@@ -15,22 +10,7 @@ export class Bug extends Animal {
   corpseEnergy = 2;
   foodTypes = [Berry, Mould];
 
-  searchForFood() {
-    if (!this.data.direction) {
-      this.data.direction = getRandomDirection();
-      this.report(
-        `${this.description} saw no food, so it turned to ${describeDirection(
-          this.data.direction
-        )}`
-      );
-    }
-    this.moveBy(this.data.direction || { x: 0, y: 0 });
-    this.report(
-      `${this.description} kept going ${describeDirection(
-        this.data.direction
-      )} in search of food`
-    );
-  }
+  searchForFood = searchInOneRandomDirection(this);
 
   act() {
     const diedOfStarvation = this.starve();
