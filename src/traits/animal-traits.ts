@@ -1,4 +1,5 @@
-import { Animal } from "../abstract-entities/Animal";
+import { Animal, Target } from "../abstract-entities/Animal";
+import { Entity } from "../Entity";
 import { getRandomDirection, describeDirection } from "../positions";
 
 export const sayHello = (that: Animal) => () => {
@@ -19,3 +20,32 @@ export const searchInOneRandomDirection = (that: Animal) => () => {
     `${that.description} kept going ${describeDirection(that.data.direction)}`
   );
 };
+
+export const pickNearestFoodAndKeepItAsTarget =
+  (that: Animal) =>
+  (thingsICanSee: Entity[]): Target | undefined => {
+    const { target } = that.data;
+
+    // Animal already has a target in mind
+    if (target) {
+      const canStillSeeTarget = !!that.findExistingTargetFrom(thingsICanSee);
+
+      // stick to the same target
+      if (canStillSeeTarget) {
+        return target;
+      }
+
+      // can't see target anymore, so forget about it
+      that.data.target = undefined;
+    }
+
+    // no target, so look for food
+    const nearestFood = that.findNearestOfClass(thingsICanSee, that.foodTypes);
+    // if there is food, set it as target
+    if (nearestFood) {
+      return that.setTarget(nearestFood);
+    }
+
+    // found no target
+    return undefined;
+  };

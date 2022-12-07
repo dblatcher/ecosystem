@@ -1,7 +1,7 @@
 import { Animal } from "../abstract-entities/Animal";
 import { Organic } from "../abstract-entities/Organic";
 import { Seed } from "../abstract-entities/Seed";
-import { searchInOneRandomDirection } from "../traits/animal-traits";
+import { pickNearestFoodAndKeepItAsTarget, searchInOneRandomDirection } from "../traits/animal-traits";
 
 export class Chicken extends Animal {
   ENTITY_TYPE_ID = "Chicken";
@@ -10,6 +10,7 @@ export class Chicken extends Animal {
   observationRange = 10;
 
   searchForFood = searchInOneRandomDirection(this);
+  chooseFoodTarget = pickNearestFoodAndKeepItAsTarget(this);
 
   act() {
     const diedOfStarvation = this.starve();
