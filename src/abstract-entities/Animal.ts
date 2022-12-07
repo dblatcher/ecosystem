@@ -36,11 +36,7 @@ export abstract class Animal extends Organic {
 
     // Animal already has a target in mind
     if (target) {
-      const canStillSeeTarget = thingsICanSee.some(
-        (entity) =>
-          entity.ENTITY_TYPE_ID === target.entityType &&
-          getDistance(target.position, entity.data.position) === 0
-      );
+      const canStillSeeTarget = !!this.findExistingTargetFrom(thingsICanSee);
 
       // stick to the same target
       if (canStillSeeTarget) {
@@ -110,7 +106,15 @@ export abstract class Animal extends Organic {
     return target;
   }
 
-  matchTarget(entities: Entity[]): Entity | undefined {
+  /**
+   * Match the animal's target to a list of entities.
+   *
+   * NOTE - test is very crude and assumes the target cannot move!
+   *
+   * @param entities a list of entities
+   * @returns the entity in the list matching this Animal's target, or undefined
+   */
+  findExistingTargetFrom(entities: Entity[]): Entity | undefined {
     const { target } = this.data;
     return target
       ? entities.find(
@@ -128,14 +132,31 @@ export abstract class Animal extends Organic {
     );
   }
 
-  moveBy(direction: Direction) {
-    this.data.position = displace(this.data.position, direction, 1);
+  moveBy(direction: Direction, speed = 1) {
+    this.data.position = displace(this.data.position, direction, speed);
   }
 
-  moveTowards(entity: Entity) {
+  moveTowards(entity: Entity, speed = 1) {
     // TO DO - prop path finding!
+    const distance = getDistance(this.data.position, entity.data.position);
     const direction = getDirectionTo(this.data.position, entity.data.position);
-    return this.moveBy(direction);
+    return this.moveBy(direction, Math.min(speed, Math.floor(distance)));
+  }
+
+  approachAndEat(food: Organic, speed = 1) {
+    this.data.direction = undefined;
+    const distance = getDistance(food.data.position, this.data.position);
+
+    if (distance > 1) {
+      this.report(
+        `${this.description} moving towards ${
+          food.description
+        }, ${distance.toFixed(4)} away`
+      );
+      return this.moveTowards(food, speed);
+    }
+
+    return this.eatWhole(food);
   }
 
   starve(): boolean {

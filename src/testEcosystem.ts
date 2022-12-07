@@ -24,7 +24,7 @@ export const makeEnvironment = (): Environment => {
       //   timeToGerminate: 0,
       // }),
 
-      new Chicken({ energy: 20, position: { x: 5, y: 8 } }),
+      new Chicken({ energy: 20, position: { x: 5, y: 13 } }),
       // RyeGrass.makeLooseSeed({ energy: 20 }, { x: 2, y: 2 }),
       RyeGrass.makeLooseSeed({ energy: 20 }, { x: 5, y: 6 }),
       // new RyeSeed({ position: { x: 4, y: 2 }, timeToGerminate: 3, energy: 20 }),

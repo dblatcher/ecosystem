@@ -15,7 +15,7 @@ export class Bug extends Animal {
   corpseEnergy = 2;
   foodTypes = [Berry, Mould];
 
-  search() {
+  searchForFood() {
     if (!this.data.direction) {
       this.data.direction = getRandomDirection();
       this.report(
@@ -32,22 +32,6 @@ export class Bug extends Animal {
     );
   }
 
-  hunt(food: Organic) {
-    this.data.direction = undefined;
-    const distance = getDistance(food.data.position, this.data.position);
-
-    if (distance > 1) {
-      this.report(
-        `${this.description} moving towards ${
-          food.description
-        }, ${distance.toFixed(4)} away`
-      );
-      return this.moveTowards(food);
-    }
-
-    return this.eatWhole(food);
-  }
-
   act() {
     const diedOfStarvation = this.starve();
     if (diedOfStarvation) {
@@ -56,12 +40,12 @@ export class Bug extends Animal {
 
     const thingsICanSee = this.observe();
     this.chooseFoodTarget(thingsICanSee);
-    const food = this.matchTarget(thingsICanSee);
+    const food = this.findExistingTargetFrom(thingsICanSee);
 
     if (food) {
-      return this.hunt(food as Organic);
+      return this.approachAndEat(food as Organic);
     } else {
-      return this.search();
+      return this.searchForFood();
     }
   }
 }

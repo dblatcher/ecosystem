@@ -9,7 +9,7 @@ export class Chicken extends Animal {
   foodTypes = [Seed];
   observationRange = 10;
 
-  search() {
+  searchForFood() {
     if (!this.data.direction) {
       this.data.direction = getRandomDirection();
       this.report(
@@ -26,22 +26,6 @@ export class Chicken extends Animal {
     );
   }
 
-  hunt(food: Organic) {
-    this.data.direction = undefined;
-    const distance = getDistance(food.data.position, this.data.position);
-
-    if (distance > 1) {
-      this.report(
-        `${this.description} moving towards ${
-          food.description
-        }, ${distance.toFixed(4)} away`
-      );
-      return this.moveTowards(food);
-    }
-
-    return this.eatWhole(food);
-  }
-
   act() {
     const diedOfStarvation = this.starve();
     if (diedOfStarvation) {
@@ -50,12 +34,12 @@ export class Chicken extends Animal {
 
     const thingsICanSee = this.observe();
     this.chooseFoodTarget(thingsICanSee);
-    const food = this.matchTarget(thingsICanSee);
+    const foodTarget = this.findExistingTargetFrom(thingsICanSee);
 
-    if (food) {
-      return this.hunt(food as Organic);
+    if (foodTarget) {
+      return this.approachAndEat(foodTarget as Organic, 2);
     } else {
-      return this.search();
+      return this.searchForFood();
     }
   }
 
