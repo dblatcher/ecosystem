@@ -92,8 +92,8 @@ export abstract class Entity {
       return;
     }
     environment.entities.splice(index, 1);
-    this.environment = undefined;
     this.report(customMessage || `${this.description} has left.`);
+    this.environment = undefined;
   }
 
   changeTo(newEntity: Entity, customMessage?: string) {

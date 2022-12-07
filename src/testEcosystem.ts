@@ -1,5 +1,6 @@
-import { Animal } from "./abstract-entities/Animal";
+// import { Animal } from "./abstract-entities/Animal";
 import { Bug } from "./entity-types/Bug";
+import { Chicken } from "./entity-types/Chicken";
 import { RyeGrass, RyeSeed } from "./entity-types/RyeGrass";
 import { Environment } from "./Environment";
 import { SilentEventLogger } from "./EventLogger";
@@ -12,7 +13,7 @@ export const makeEnvironment = (): Environment => {
     },
     [
       // new Mould({ energy: 4, position: { x: 5, y: 5 } }),
-      // new Bug({ energy: 15, position: { x: 0, y: 2 } }),
+      new Bug({ energy: 15, position: { x: 0, y: 2 } }),
 
       // new RyeGrass({
       //   energy: 15,
@@ -23,8 +24,10 @@ export const makeEnvironment = (): Environment => {
       //   timeToGerminate: 0,
       // }),
 
-      RyeGrass.makeLooseSeed({ energy: 20 }, { x: 2, y: 2 }),
-      new RyeSeed({ position: { x: 4, y: 2 }, timeToGerminate: 3, energy: 20 }),
+      new Chicken({ energy: 20, position: { x: 5, y: 8 } }),
+      // RyeGrass.makeLooseSeed({ energy: 20 }, { x: 2, y: 2 }),
+      RyeGrass.makeLooseSeed({ energy: 20 }, { x: 5, y: 6 }),
+      // new RyeSeed({ position: { x: 4, y: 2 }, timeToGerminate: 3, energy: 20 }),
       // new RyeGrass({
       //   energy: 30,
       //   stalkHeight: 6,

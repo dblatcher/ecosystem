@@ -1,19 +1,13 @@
-import { Entity } from "../Entity";
-import {
-  describeDirection,
-  getDistance,
-  getRandomDirection,
-} from "../positions";
-import { Animal, Target } from "../abstract-entities/Animal";
-import { Berry } from "./Berry";
-import { Mould } from "./Mould";
+import { Animal } from "../abstract-entities/Animal";
 import { Organic } from "../abstract-entities/Organic";
+import { Seed } from "../abstract-entities/Seed";
+import { getRandomDirection, describeDirection, getDistance } from "../positions";
 
-export class Bug extends Animal {
-  ENTITY_TYPE_ID = "Bug";
+export class Chicken extends Animal {
+  ENTITY_TYPE_ID = "Chicken";
+  corpseEnergy = 50;
+  foodTypes = [Seed];
   observationRange = 10;
-  corpseEnergy = 2;
-  foodTypes = [Berry, Mould];
 
   search() {
     if (!this.data.direction) {
@@ -64,4 +58,5 @@ export class Bug extends Animal {
       return this.search();
     }
   }
+
 }

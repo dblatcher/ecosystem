@@ -24,11 +24,42 @@ export abstract class Animal extends Organic {
   ENTITY_TYPE_ID = "Animal";
   observationRange = 2;
   corpseEnergy = 1;
-  static foodTypes: typeof Organic[] = [];
+  foodTypes: typeof Organic[] = [];
 
   constructor(data: AnimalData, id?: string) {
     super(data, id);
     this.data = data;
+  }
+
+  chooseFoodTarget(thingsICanSee: Entity[]): Target | undefined {
+    const { target } = this.data;
+
+    // Animal already has a target in mind
+    if (target) {
+      const canStillSeeTarget = thingsICanSee.some(
+        (entity) =>
+          entity.ENTITY_TYPE_ID === target.entityType &&
+          getDistance(target.position, entity.data.position) === 0
+      );
+
+      // stick to the same target
+      if (canStillSeeTarget) {
+        return target;
+      }
+
+      // can't see target anymore, so forget about it
+      this.data.target = undefined;
+    }
+
+    // no target, so look for food
+    const nearestFood = this.findNearestOfClass(thingsICanSee, this.foodTypes);
+    // if there is food, set it as target
+    if (nearestFood) {
+      return this.setTarget(nearestFood);
+    }
+
+    // found no target
+    return undefined;
   }
 
   die(customMessage?: string) {
