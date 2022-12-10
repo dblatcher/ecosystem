@@ -8,15 +8,11 @@ import {
 import { Organic, OrganicData } from "./Organic";
 import { Corpse } from "../entity-types/Corpse";
 import { Entity } from "../Entity";
-
-export type Target = {
-  entityType: string;
-  position: Position;
-};
+import { MentalEntity, entityToMentalEntity } from "../traits/memory";
 
 export type AnimalData = OrganicData & {
   direction?: Direction;
-  target?: Target;
+  target?: MentalEntity;
 };
 
 export abstract class Animal extends Organic {
@@ -31,7 +27,7 @@ export abstract class Animal extends Organic {
     this.data = data;
   }
 
-  abstract chooseFoodTarget(thingsICanSee: Entity[]): Target | undefined;
+  abstract chooseFoodTarget(thingsICanSee: Entity[]): MentalEntity | undefined;
 
   die(customMessage?: string) {
     return this.changeTo(
@@ -47,6 +43,10 @@ export abstract class Animal extends Organic {
     );
   }
 
+  canSeePosition(position: Position): boolean {
+    return getDistance(position, this.data.position) <= this.observationRange;
+  }
+
   observe(report = false): Entity[] {
     const { environment, observationRange } = this;
     if (!environment || !observationRange) {
@@ -55,11 +55,7 @@ export abstract class Animal extends Organic {
 
     const inSight = environment.entities
       .filter((entity) => entity !== this)
-      .filter(
-        (entity) =>
-          getDistance(entity.data.position, this.data.position) <=
-          observationRange
-      );
+      .filter((entity) => this.canSeePosition(entity.data.position));
 
     if (report) {
       this.report(
@@ -72,11 +68,8 @@ export abstract class Animal extends Organic {
     return inSight;
   }
 
-  setTarget(entity: Entity): Target {
-    const target = {
-      position: entity.data.position,
-      entityType: entity.ENTITY_TYPE_ID,
-    };
+  setTarget(entity: Entity): MentalEntity {
+    const target = entityToMentalEntity(entity);
     this.data.target = target;
     return target;
   }
@@ -95,7 +88,7 @@ export abstract class Animal extends Organic {
       ? entities.find(
           (thing) =>
             thing.ENTITY_TYPE_ID === target.entityType &&
-            getDistance(target.position, thing.data.position) === 0
+            getDistance(target.data.position, thing.data.position) === 0
         )
       : undefined;
   }
@@ -111,7 +104,7 @@ export abstract class Animal extends Organic {
     this.data.position = displace(this.data.position, direction, speed);
   }
 
-  moveTowards(entity: Entity, speed = 1) {
+  moveTowards(entity: Entity | MentalEntity, speed = 1) {
     // TO DO - prop path finding!
     const distance = getDistance(this.data.position, entity.data.position);
     const direction = getDirectionTo(this.data.position, entity.data.position);

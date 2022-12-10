@@ -12,33 +12,11 @@ export const makeEnvironment = (): Environment => {
       time: 0,
     },
     [
-      // new Mould({ energy: 4, position: { x: 5, y: 5 } }),
-      new Bug({ energy: 15, position: { x: 0, y: 2 } }),
+      new Chicken({ energy: 20, position: { x: 7, y: 6 }, memory: [] }),
 
-      // new RyeGrass({
-      //   energy: 15,
-      //   stalkHeight: 0,
-      //   position: { x: 8, y: 1 },
-      //   leaves: [],
-      //   seeds: [],
-      //   timeToGerminate: 0,
-      // }),
-
-      new Chicken({ energy: 20, position: { x: 5, y: 13 } }),
-      // RyeGrass.makeLooseSeed({ energy: 20 }, { x: 2, y: 2 }),
-      RyeGrass.makeLooseSeed({ energy: 20 }, { x: 5, y: 6 }),
-      // new RyeSeed({ position: { x: 4, y: 2 }, timeToGerminate: 3, energy: 20 }),
-      // new RyeGrass({
-      //   energy: 30,
-      //   stalkHeight: 6,
-      //   position: { x: 5, y: 1 },
-      //   leaves: [
-      //     { energy: 5, surface: 10 },
-      //     { energy: 5, surface: 10 },
-      //     { energy: 5, surface: 10 },
-      //   ],
-      //   seeds: [{ energy: 15 }],
-      // }),
+      RyeGrass.makeLooseSeed({ energy: 20 }, { x: 9, y: 6 }),
+      RyeGrass.makeLooseSeed({ energy: 20 }, { x: 3, y: 6 }),
+      RyeGrass.makeLooseSeed({ energy: 20 }, { x: 7, y: 12 }),
     ],
     {
       logger: new SilentEventLogger(),

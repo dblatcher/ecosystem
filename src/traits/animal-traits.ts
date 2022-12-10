@@ -1,6 +1,7 @@
-import { Animal, Target } from "../abstract-entities/Animal";
+import { Animal } from "../abstract-entities/Animal";
 import { Entity } from "../Entity";
 import { getRandomDirection, describeDirection } from "../positions";
+import { MentalEntity } from "./memory";
 
 export const sayHello = (that: Animal) => () => {
   console.log(
@@ -21,9 +22,9 @@ export const searchInOneRandomDirection = (that: Animal) => () => {
   );
 };
 
-export const pickNearestFoodAndKeepItAsTarget =
+export const pickNearestFoodInSightAndKeepItAsTarget =
   (that: Animal) =>
-  (thingsICanSee: Entity[]): Target | undefined => {
+  (thingsICanSee: Entity[]): MentalEntity | undefined => {
     const { target } = that.data;
 
     // Animal already has a target in mind
