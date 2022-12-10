@@ -124,6 +124,7 @@ export abstract class Animal extends Organic {
       return this.moveTowards(food, speed);
     }
 
+    this.data.target = undefined;
     return this.eatWhole(food);
   }
 

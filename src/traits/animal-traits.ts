@@ -1,7 +1,8 @@
 import { Animal } from "../abstract-entities/Animal";
+import { AnimalWithMemory } from "../abstract-entities/AnimalWithMemory";
 import { Entity } from "../Entity";
-import { getRandomDirection, describeDirection } from "../positions";
-import { MentalEntity } from "./memory";
+import { getRandomDirection, describeDirection, describePosition, getDistance } from "../positions";
+import { mentalEntitiesMatch, MentalEntity } from "./memory";
 
 export const sayHello = (that: Animal) => () => {
   console.log(
@@ -45,6 +46,54 @@ export const pickNearestFoodInSightAndKeepItAsTarget =
     // if there is food, set it as target
     if (nearestFood) {
       return that.setTarget(nearestFood);
+    }
+
+    // found no target
+    return undefined;
+  };
+
+
+  export const pickNearestFoodInMemoryAndKeepItAsTarget =
+  (that: AnimalWithMemory & {}) => (): MentalEntity | undefined => {
+    const { target, memory, position } = that.data;
+
+    // Animal already has a target in mind
+    if (target) {
+      const thinksTargetStillThere = memory.some((memoryItem) =>
+        mentalEntitiesMatch(memoryItem, target)
+      );
+
+      // stick to the same target
+      if (thinksTargetStillThere) {
+        return target;
+      }
+
+      that.report(`${that.description} was looking for a ${target.entityType} at ${describePosition(target.data.position)}, but it is gone.`)
+      that.data.target = undefined;
+    }
+
+    // no target, so pick closest seed in memory
+    // TO DO - way to look up Class by Entity name
+    const nearestFood = memory
+      .filter((memoryItem) =>
+        memoryItem.entityType.toLowerCase().includes("seed")
+      )
+      .sort(
+        (a, b) =>
+          getDistance(a.data.position, position) -
+          getDistance(b.data.position, position)
+      )[0];
+
+    // if there is food, set it as target
+    if (nearestFood) {
+      that.report(
+        `${that.description} remembers a ${
+          nearestFood.entityType
+        } at ${describePosition(nearestFood.data.position)} which is ${getDistance(nearestFood.data.position, that.data.position)} away.`
+      );
+
+      that.data.target = nearestFood;
+      return target;
     }
 
     // found no target
