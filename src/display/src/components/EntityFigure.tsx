@@ -7,7 +7,8 @@ interface Props {
 }
 
 const PlantDetails = (props: { plant: Plant }) => {
-  const { energy, leaves } = props.plant.data;
+  const { energy } = props.plant.data;
+  const { totalLeafSurface } = props.plant;
   return (
     <>
       <span
@@ -22,13 +23,14 @@ const PlantDetails = (props: { plant: Plant }) => {
       </span>
       <span
         style={{
+          fontSize: "1em",
           position: "absolute",
           top: 0,
           left: 0,
           transform: "translate(0, -100%)",
         }}
       >
-        leaves={leaves.length}
+        L={totalLeafSurface}
       </span>
   
     </>
@@ -45,16 +47,16 @@ const EntityFigure = ({ entity }: Props) => {
         position: "absolute",
         border: "1px dotted yellowgreen",
         background: "#8393ef8a",
-        left: `${2 * x}rem`,
-        top: `${2 * y}rem`,
-        width: `${2}rem`,
-        height: `${2}rem`,
+        left: `${2 * x}em`,
+        top: `${2 * y}em`,
+        width: `${2}em`,
+        height: `${2}em`,
         margin: 0,
       }}
     >
       <span
         style={{
-          fontSize: "200%",
+          fontSize: "2em",
         }}
       >
         {entity.ENTITY_TYPE_ID.substring(0, 1)}

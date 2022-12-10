@@ -26,7 +26,7 @@ export abstract class Plant extends Organic {
     this.data = data;
   }
 
-  protected get totalLeafSurface(): number {
+  get totalLeafSurface(): number {
     return this.data.leaves
       .map((leaf) => leaf.surface)
       .reduce((p, c) => p + c, 0);

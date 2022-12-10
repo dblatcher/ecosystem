@@ -7,6 +7,7 @@ import { makeEnvironment } from "../../../testEcosystem";
 type Props = {};
 type State = {
   log: string[];
+  gridScalePercent: number;
 };
 
 export default class GridContainer extends Component<Props, State> {
@@ -16,8 +17,11 @@ export default class GridContainer extends Component<Props, State> {
     super(props);
     this.state = {
       log: [],
+      gridScalePercent: 100,
     };
     this.tickEnviroment = this.tickEnviroment.bind(this);
+    this.scaleDown = this.scaleDown.bind(this);
+    this.scaleUp = this.scaleUp.bind(this);
   }
 
   tickEnviroment() {
@@ -31,18 +35,31 @@ export default class GridContainer extends Component<Props, State> {
     this.setState({ log: newLogs });
   }
 
+  scaleDown() {
+    this.setState({
+      gridScalePercent: Math.max(20, this.state.gridScalePercent - 10),
+    });
+  }
+  scaleUp() {
+    this.setState({
+      gridScalePercent: Math.min(200, this.state.gridScalePercent + 10),
+    });
+  }
+
   render() {
-    const { log } = this.state;
+    const { log, gridScalePercent } = this.state;
     return (
       <div style={{ display: "flex" }}>
         {!!this.environment && (
           <section>
-            <p>
-              squares ={" "}
-              {this.environment.data.space.height *
-                this.environment.data.space.width}
-            </p>
-            <EnvironmentGrid environment={this.environment} />
+            <div>
+              <button onClick={this.scaleDown}>-</button>
+              <button onClick={this.scaleUp}>+</button>
+            </div>
+            <EnvironmentGrid
+              environment={this.environment}
+              scalePercent={gridScalePercent}
+            />
           </section>
         )}
 
