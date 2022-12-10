@@ -1,6 +1,7 @@
 import { Animal } from "../abstract-entities/Animal";
 import { AnimalWithMemory } from "../abstract-entities/AnimalWithMemory";
 import { Entity } from "../Entity";
+import { entityTypeIsOfClass } from "../entity-lookup";
 import { getRandomDirection, describeDirection, describePosition, getDistance } from "../positions";
 import { mentalEntitiesMatch, MentalEntity } from "./memory";
 
@@ -74,9 +75,10 @@ export const pickNearestFoodInSightAndKeepItAsTarget =
 
     // no target, so pick closest seed in memory
     // TO DO - way to look up Class by Entity name
+
     const nearestFood = memory
       .filter((memoryItem) =>
-        memoryItem.entityType.toLowerCase().includes("seed")
+        entityTypeIsOfClass(memoryItem.entityType, that.foodTypes)
       )
       .sort(
         (a, b) =>
