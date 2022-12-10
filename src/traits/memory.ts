@@ -1,5 +1,3 @@
-import { Animal } from "../abstract-entities/Animal";
-import { Plant } from "../abstract-entities/Plant";
 import { Entity } from "../Entity";
 import { Position, positionsMatch } from "../positions";
 
