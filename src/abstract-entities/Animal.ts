@@ -12,7 +12,7 @@ import { MentalEntity, entityToMentalEntity } from "../traits/memory";
 
 export type AnimalData = OrganicData & {
   direction?: Direction;
-  target?: MentalEntity;
+  foodTarget?: MentalEntity;
 };
 
 export abstract class Animal extends Organic {
@@ -70,7 +70,7 @@ export abstract class Animal extends Organic {
 
   setTarget(entity: Entity): MentalEntity {
     const target = entityToMentalEntity(entity);
-    this.data.target = target;
+    this.data.foodTarget = target;
     return target;
   }
 
@@ -83,7 +83,7 @@ export abstract class Animal extends Organic {
    * @returns the entity in the list matching this Animal's target, or undefined
    */
   findExistingTargetFrom(entities: Entity[]): Entity | undefined {
-    const { target } = this.data;
+    const { foodTarget: target } = this.data;
     return target
       ? entities.find(
           (thing) =>
@@ -124,7 +124,7 @@ export abstract class Animal extends Organic {
       return this.moveTowards(food, speed);
     }
 
-    this.data.target = undefined;
+    this.data.foodTarget = undefined;
     return this.eatWhole(food);
   }
 

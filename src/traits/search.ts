@@ -2,7 +2,12 @@ import { Animal } from "../abstract-entities/Animal";
 import { AnimalWithMemory } from "../abstract-entities/AnimalWithMemory";
 import { Entity } from "../Entity";
 import { entityTypeIsOfClass } from "../entity-lookup";
-import { getRandomDirection, describeDirection, describePosition, getDistance } from "../positions";
+import {
+  getRandomDirection,
+  describeDirection,
+  describePosition,
+  getDistance,
+} from "../positions";
 import { mentalEntitiesMatch, MentalEntity } from "./memory";
 
 export const sayHello = (that: Animal) => () => {
@@ -27,19 +32,19 @@ export const searchInOneRandomDirection = (that: Animal) => () => {
 export const pickNearestFoodInSightAndKeepItAsTarget =
   (that: Animal) =>
   (thingsICanSee: Entity[]): MentalEntity | undefined => {
-    const { target } = that.data;
+    const { foodTarget } = that.data;
 
     // Animal already has a target in mind
-    if (target) {
+    if (foodTarget) {
       const canStillSeeTarget = !!that.findExistingTargetFrom(thingsICanSee);
 
       // stick to the same target
       if (canStillSeeTarget) {
-        return target;
+        return foodTarget;
       }
 
       // can't see target anymore, so forget about it
-      that.data.target = undefined;
+      that.data.foodTarget = undefined;
     }
 
     // no target, so look for food
@@ -53,24 +58,27 @@ export const pickNearestFoodInSightAndKeepItAsTarget =
     return undefined;
   };
 
-
-  export const pickNearestFoodInMemoryAndKeepItAsTarget =
+export const pickNearestFoodInMemoryAndKeepItAsTarget =
   (that: AnimalWithMemory & {}) => (): MentalEntity | undefined => {
-    const { target, memory, position } = that.data;
+    const { foodTarget, memory, position } = that.data;
 
     // Animal already has a target in mind
-    if (target) {
+    if (foodTarget) {
       const thinksTargetStillThere = memory.some((memoryItem) =>
-        mentalEntitiesMatch(memoryItem, target)
+        mentalEntitiesMatch(memoryItem, foodTarget)
       );
 
       // stick to the same target
       if (thinksTargetStillThere) {
-        return target;
+        return foodTarget;
       }
 
-      that.report(`${that.description} was looking for a ${target.entityType} at ${describePosition(target.data.position)}, but it is gone.`)
-      that.data.target = undefined;
+      that.report(
+        `${that.description} was looking for a ${
+          foodTarget.entityType
+        } at ${describePosition(foodTarget.data.position)}, but it is gone.`
+      );
+      that.data.foodTarget = undefined;
     }
 
     // no target, so pick closest seed in memory
@@ -91,11 +99,16 @@ export const pickNearestFoodInSightAndKeepItAsTarget =
       that.report(
         `${that.description} remembers a ${
           nearestFood.entityType
-        } at ${describePosition(nearestFood.data.position)} which is ${getDistance(nearestFood.data.position, that.data.position)} away.`
+        } at ${describePosition(
+          nearestFood.data.position
+        )} which is ${getDistance(
+          nearestFood.data.position,
+          that.data.position
+        )} away.`
       );
 
-      that.data.target = nearestFood;
-      return target;
+      that.data.foodTarget = nearestFood;
+      return foodTarget;
     }
 
     // found no target
