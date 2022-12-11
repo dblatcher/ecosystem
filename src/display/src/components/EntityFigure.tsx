@@ -1,41 +1,13 @@
 import { h, Fragment } from "preact";
 import { Entity } from "../../../Entity";
 import { Plant } from "../../../abstract-entities/Plant";
+import { PlantDetails } from "./PlantDetails";
+import { AnimalDetails } from "./AnimalDetails";
+import { Animal } from "../../../abstract-entities/Animal";
 
 interface Props {
   entity: Entity;
 }
-
-const PlantDetails = (props: { plant: Plant }) => {
-  const { energy } = props.plant.data;
-  const { totalLeafSurface } = props.plant;
-  return (
-    <>
-      <span
-        style={{
-          position: "absolute",
-          bottom: 0,
-          left: 0,
-          transform: "translate(0, 100%)",
-        }}
-      >
-        E={energy}
-      </span>
-      <span
-        style={{
-          fontSize: "1em",
-          position: "absolute",
-          top: 0,
-          left: 0,
-          transform: "translate(0, -100%)",
-        }}
-      >
-        L={totalLeafSurface}
-      </span>
-  
-    </>
-  );
-};
 
 const EntityFigure = ({ entity }: Props) => {
   const { x, y } = entity.data.position;
@@ -63,6 +35,7 @@ const EntityFigure = ({ entity }: Props) => {
       </span>
 
       {entity instanceof Plant && <PlantDetails plant={entity} />}
+      {entity instanceof Animal && <AnimalDetails animal={entity} />}
     </figure>
   );
 };
