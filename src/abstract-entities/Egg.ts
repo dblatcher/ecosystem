@@ -1,10 +1,10 @@
-import { entityMap } from "../entity-lookup";
 import { describePosition } from "../positions";
 import { Animal } from "./Animal";
 import { OrganicData, Organic } from "./Organic";
 
 export interface EggData extends OrganicData {
   timeToHatch: number;
+  isDead?: boolean;
 }
 
 export abstract class Egg extends Organic {
@@ -38,6 +38,8 @@ export abstract class Egg extends Organic {
   }
 
   act(): void {
-    this.develop();
+    if (!this.data.isDead) {
+      this.develop();
+    }
   }
 }

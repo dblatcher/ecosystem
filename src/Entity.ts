@@ -5,7 +5,6 @@ import {
   positionExists,
 } from "./positions";
 import { Environment } from "./Environment";
-import { entityMap } from "./entity-lookup";
 
 export type EntityData = {
   position: Position;
@@ -28,10 +27,6 @@ export abstract class Entity {
     return id
       ? `${id} the ${ENTITY_TYPE_ID}${place}`
       : `${ENTITY_TYPE_ID}${place}`;
-  }
-
-  get MyClass(): typeof Entity {
-    return entityMap[this.ENTITY_TYPE_ID] || Entity;
   }
 
   findNearestMatch(

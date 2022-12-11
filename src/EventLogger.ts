@@ -15,7 +15,7 @@ export abstract class EventLogger {
 
 export class EventConsoleLogger extends EventLogger {
   handleReport(report: EventReport) {
-    console.log(report);
+    console.log(report.message);
     this.eventsLastTick.push(report);
   }
 }

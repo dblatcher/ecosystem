@@ -7,11 +7,12 @@ import { Seed } from "./abstract-entities/Seed";
 import { Entity } from "./Entity";
 import { Berry } from "./entity-types/Berry";
 import { Bug } from "./entity-types/Bug";
-import { Chicken } from "./entity-types/Chicken";
+import { Chicken, EggOfChicken } from "./entity-types/Chicken";
 import { Corpse } from "./entity-types/Corpse";
 import { Mould } from "./entity-types/Mould";
 import { RyeGrass, RyeSeed } from "./entity-types/RyeGrass";
 import { Stone } from "./entity-types/Stone";
+
 
 export const entityMap: Readonly<Record<string, typeof Entity | undefined>> = {
   Entity,
@@ -29,6 +30,7 @@ export const entityMap: Readonly<Record<string, typeof Entity | undefined>> = {
   RyeSeed,
   Stone,
   Egg,
+  EggOfChicken,
 };
 
 export const entityTypeIsOfClass = (
