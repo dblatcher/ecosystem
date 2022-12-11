@@ -3,6 +3,7 @@ import { Organic, OrganicData } from "../abstract-entities/Organic";
 
 export type CorpseData = OrganicData & {
   animalType: string;
+  fat?: number;
 };
 export class Corpse extends Organic {
   ENTITY_TYPE_ID = "Corpse";
@@ -19,14 +20,14 @@ export class Corpse extends Organic {
       : `A ${this.data.animalType} corpse${place}`;
   }
 
-  rot () {
-    this.data.energy--
+  rot() { // to do - does fat rot?
+    this.data.energy--;
     if (this.data.energy <= 0) {
-      this.leave(`${this.description} has rotted away.`)
+      this.leave(`${this.description} has rotted away.`);
     }
   }
 
   act(): void {
-    return this.rot()
+    return this.rot();
   }
 }

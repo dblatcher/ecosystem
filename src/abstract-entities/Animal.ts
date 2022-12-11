@@ -28,7 +28,7 @@ export abstract class Animal extends Organic {
   }
 
   abstract chooseFoodTarget(thingsICanSee: Entity[]): MentalEntity | undefined;
-
+  // TO DO - SHOULD ALL ANIMALS HAVE FAT DATA SO IT CAN BE ADDED ON CORPSES?
   die(customMessage?: string) {
     return this.changeTo(
       new Corpse(
