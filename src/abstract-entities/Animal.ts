@@ -13,6 +13,7 @@ import { MentalEntity, entityToMentalEntity } from "../traits/memory";
 export type AnimalData = OrganicData & {
   direction?: Direction;
   foodTarget?: MentalEntity;
+  fat?: number;
 };
 
 export abstract class Animal extends Organic {
@@ -28,7 +29,7 @@ export abstract class Animal extends Organic {
   }
 
   abstract chooseFoodTarget(thingsICanSee: Entity[]): MentalEntity | undefined;
-  // TO DO - SHOULD ALL ANIMALS HAVE FAT DATA SO IT CAN BE ADDED ON CORPSES?
+
   die(customMessage?: string) {
     return this.changeTo(
       new Corpse(
@@ -36,6 +37,7 @@ export abstract class Animal extends Organic {
           ...this.data,
           energy: this.data.energy + this.corpseEnergy,
           animalType: this.ENTITY_TYPE_ID,
+          fat: this.data.fat || 0,
         },
         this.id
       ),

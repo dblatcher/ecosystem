@@ -3,7 +3,7 @@ import { Organic, OrganicData } from "../abstract-entities/Organic";
 
 export type CorpseData = OrganicData & {
   animalType: string;
-  fat?: number;
+  fat: number;
 };
 export class Corpse extends Organic {
   ENTITY_TYPE_ID = "Corpse";
