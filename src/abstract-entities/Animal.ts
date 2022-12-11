@@ -8,7 +8,11 @@ import {
 import { Organic, OrganicData } from "./Organic";
 import { Corpse } from "../entity-types/Corpse";
 import { Entity } from "../Entity";
-import { MentalEntity, entityToMentalEntity } from "../traits/memory";
+import {
+  MentalEntity,
+  entityToMentalEntity,
+  mentalEntitiesMatch,
+} from "../traits/memory";
 
 export type AnimalData = OrganicData & {
   direction?: Direction;
@@ -84,15 +88,20 @@ export abstract class Animal extends Organic {
    * @param entities a list of entities
    * @returns the entity in the list matching this Animal's target, or undefined
    */
-  findExistingTargetFrom(entities: Entity[]): Entity | undefined {
-    const { foodTarget: target } = this.data;
-    return target
-      ? entities.find(
-          (thing) =>
-            thing.ENTITY_TYPE_ID === target.entityType &&
-            getDistance(target.data.position, thing.data.position) === 0
-        )
-      : undefined;
+  findExistingFoodTargetFrom(entities: Entity[]): Entity | undefined {
+    const { foodTarget } = this.data;
+
+    if (!foodTarget) {
+      return undefined;
+    }
+
+    const matchIndex = entities
+      .map(entityToMentalEntity)
+      .findIndex((mentalEntity) =>
+        mentalEntitiesMatch(mentalEntity, foodTarget)
+      );
+
+    return matchIndex === -1 ? undefined : entities[matchIndex];
   }
 
   eatWhole(entity: Organic) {

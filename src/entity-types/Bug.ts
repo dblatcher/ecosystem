@@ -21,7 +21,7 @@ export class Bug extends Animal {
 
     const thingsICanSee = this.observe();
     this.chooseFoodTarget(thingsICanSee);
-    const food = this.findExistingTargetFrom(thingsICanSee);
+    const food = this.findExistingFoodTargetFrom(thingsICanSee);
 
     if (food) {
       return this.approachAndEat(food as Organic);

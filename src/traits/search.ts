@@ -36,7 +36,7 @@ export const pickNearestFoodInSightAndKeepItAsTarget =
 
     // Animal already has a target in mind
     if (foodTarget) {
-      const canStillSeeTarget = !!that.findExistingTargetFrom(thingsICanSee);
+      const canStillSeeTarget = !!that.findExistingFoodTargetFrom(thingsICanSee);
 
       // stick to the same target
       if (canStillSeeTarget) {

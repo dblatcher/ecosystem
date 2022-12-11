@@ -46,7 +46,7 @@ export class Chicken extends AnimalWithMemory {
     const thingsICanSee = this.observe();
 
     const target = this.chooseFoodTarget();
-    const foodTargetEntity = this.findExistingTargetFrom(thingsICanSee);
+    const foodTargetEntity = this.findExistingFoodTargetFrom(thingsICanSee);
 
     if (foodTargetEntity) {
       return this.approachAndEat(foodTargetEntity as Organic, 2);
