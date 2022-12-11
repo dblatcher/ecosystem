@@ -2,7 +2,7 @@ import { h, Fragment } from "preact";
 import { Animal } from "../../../abstract-entities/Animal";
 
 export const AnimalDetails = (props: { animal: Animal }) => {
-  const { energy,  } = props.animal.data;
+  const { energy, fat = 0 } = props.animal.data;
 
   return (
     <>
@@ -14,7 +14,7 @@ export const AnimalDetails = (props: { animal: Animal }) => {
           transform: "translate(0, 100%)",
         }}
       >
-        E={energy}
+        E={energy}, F={fat}
       </span>
     </>
   );
