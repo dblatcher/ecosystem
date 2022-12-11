@@ -2,7 +2,7 @@ import { Animal } from "../abstract-entities/Animal";
 import { Berry } from "./Berry";
 import { Mould } from "./Mould";
 import { Organic } from "../abstract-entities/Organic";
-import { searchInOneRandomDirection, pickNearestFoodInSightAndKeepItAsTarget } from "../traits/animal-traits";
+import { searchInOneRandomDirection, pickNearestFoodInSightAndKeepItAsTarget } from "../traits/search";
 
 export class Bug extends Animal {
   ENTITY_TYPE_ID = "Bug";

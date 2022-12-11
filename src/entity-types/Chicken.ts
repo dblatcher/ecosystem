@@ -1,7 +1,7 @@
 import { AnimalWithMemory } from "../abstract-entities/AnimalWithMemory";
 import { Organic } from "../abstract-entities/Organic";
 import { Seed } from "../abstract-entities/Seed";
-import { pickNearestFoodInMemoryAndKeepItAsTarget, searchInOneRandomDirection } from "../traits/animal-traits";
+import { pickNearestFoodInMemoryAndKeepItAsTarget, searchInOneRandomDirection } from "../traits/search";
 
 export class Chicken extends AnimalWithMemory {
 
