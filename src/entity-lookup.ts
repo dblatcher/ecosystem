@@ -1,5 +1,6 @@
 import { Animal } from "./abstract-entities/Animal";
 import { AnimalWithMemory } from "./abstract-entities/AnimalWithMemory";
+import { Egg } from "./abstract-entities/Egg";
 import { Organic } from "./abstract-entities/Organic";
 import { Plant } from "./abstract-entities/Plant";
 import { Seed } from "./abstract-entities/Seed";
@@ -27,6 +28,7 @@ export const entityMap: Readonly<Record<string, typeof Entity | undefined>> = {
   RyeGrass,
   RyeSeed,
   Stone,
+  Egg,
 };
 
 export const entityTypeIsOfClass = (
