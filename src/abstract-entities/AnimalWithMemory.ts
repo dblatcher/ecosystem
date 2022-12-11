@@ -2,7 +2,7 @@ import { Entity } from "../Entity";
 import { entityToMentalEntity, MentalEntity } from "../traits/memory";
 import { AnimalData, Animal } from "./Animal";
 
-type AnimalWithMemoryData = AnimalData & {
+export type AnimalWithMemoryData = AnimalData & {
   memory: MentalEntity[];
 };
 

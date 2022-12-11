@@ -13,10 +13,17 @@ export const makeEnvironment = (): Environment => {
     },
     [
       new Chicken(
-        { energy: 20, position: { x: 7, y: 6 }, memory: [] },
+        { fat: 20, energy: 20, position: { x: 7, y: 6 }, memory: [] },
         "sally"
       ),
-      new Chicken({ energy: 20, position: { x: 2, y: 6 }, memory: [] }, "bob"),
+      new Chicken(
+        { fat: 30, energy: 5, position: { x: 2, y: 6 }, memory: [] },
+        "bob"
+      ),
+      RyeGrass.makeLooseSeed({ energy: 20 }, { x: 2, y: 5 }),
+      RyeGrass.makeLooseSeed({ energy: 20 }, { x: 2, y: 4 }),
+      RyeGrass.makeLooseSeed({ energy: 20 }, { x: 2, y: 3 }),
+      RyeGrass.makeLooseSeed({ energy: 20 }, { x: 2, y: 2 }),
 
       RyeGrass.makeLooseSeed({ energy: 20 }, { x: 9, y: 6 }),
       RyeGrass.makeLooseSeed({ energy: 20 }, { x: 3, y: 6 }),
