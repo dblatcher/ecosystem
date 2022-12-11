@@ -16,22 +16,22 @@ export const makeEnvironment = (logger:EventLogger = new SilentEventLogger() ): 
       //   { fat: 20, energy: 20, position: { x: 7, y: 6 }, memory: [] },
       //   "sally"
       // ),
-      // new Chicken(
-      //   { fat: 30, energy: 5, position: { x: 2, y: 6 }, memory: [] },
-      //   "bob"
-      // ),
-      new EggOfChicken(
-        { energy: 20, position: { x: 2, y: 6 }, timeToHatch: 5 },
+      new Chicken(
+        { fat: 50, energy: 100, position: { x: 2, y: 6 }, memory: [] },
         "bob"
       ),
-      // RyeGrass.makeLooseSeed({ energy: 20 }, { x: 2, y: 5 }),
-      // RyeGrass.makeLooseSeed({ energy: 20 }, { x: 2, y: 4 }),
-      // RyeGrass.makeLooseSeed({ energy: 20 }, { x: 2, y: 3 }),
-      // RyeGrass.makeLooseSeed({ energy: 20 }, { x: 2, y: 2 }),
+      // new EggOfChicken(
+      //   { energy: 20, position: { x: 2, y: 6 }, timeToHatch: 5 },
+      //   "bob jr"
+      // ),
+      RyeGrass.makeLooseSeed({ energy: 20 }, { x: 2, y: 5 }),
+      RyeGrass.makeLooseSeed({ energy: 20 }, { x: 2, y: 4 }),
+      RyeGrass.makeLooseSeed({ energy: 20 }, { x: 2, y: 3 }),
+      RyeGrass.makeLooseSeed({ energy: 20 }, { x: 2, y: 2 }),
 
-      // RyeGrass.makeLooseSeed({ energy: 20 }, { x: 9, y: 6 }),
-      // RyeGrass.makeLooseSeed({ energy: 20 }, { x: 3, y: 6 }),
-      // RyeGrass.makeLooseSeed({ energy: 20 }, { x: 7, y: 12 }),
+      RyeGrass.makeLooseSeed({ energy: 20 }, { x: 9, y: 6 }),
+      RyeGrass.makeLooseSeed({ energy: 20 }, { x: 3, y: 6 }),
+      RyeGrass.makeLooseSeed({ energy: 20 }, { x: 7, y: 12 }),
 
       // new RyeGrass({
       //   energy: 10,
