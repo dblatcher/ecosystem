@@ -62,7 +62,7 @@ export class Environment {
   }
 
   isSunlightAt(position: Position): boolean {
-    return true;
+    return this.timeOfDay === "day";
   }
 
   getWindAt(position: Position): { direction: Direction; speed: number } {

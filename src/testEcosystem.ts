@@ -12,7 +12,7 @@ export const makeEnvironment = (
   return new Environment(
     {
       space: { width: 12, height: 20 },
-      time: 10000,
+      time: (7.75 * (60 * 60)/15),
     },
     [
       // new Chicken(
