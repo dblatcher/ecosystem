@@ -2,6 +2,7 @@ import { h, Component } from "preact";
 import { Environment } from "../../../Environment";
 import EnvironmentGrid from "./EnvironmentGrid";
 import { makeEnvironment } from "../../../testEcosystem";
+import { Clock } from "./Clock";
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 type Props = {};
@@ -56,6 +57,7 @@ export default class GridContainer extends Component<Props, State> {
               <button onClick={this.scaleDown}>-</button>
               <button onClick={this.scaleUp}>+</button>
             </div>
+            <Clock environment={this.environment} />
             <EnvironmentGrid
               environment={this.environment}
               scalePercent={gridScalePercent}
