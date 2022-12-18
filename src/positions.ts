@@ -72,3 +72,11 @@ export const displace = (
     y: position.y + distance * direction.y,
   };
 };
+
+/**
+ * Convience function for creating Positions
+ * @returns a spreadable object with a position
+ */
+export const pos = (x: number, y: number): { position: Position } => ({
+  position: { x, y },
+});

@@ -4,6 +4,7 @@ import { Chicken, EggOfChicken } from "./entity-types/Chicken";
 import { RyeGrass, RyeSeed } from "./entity-types/RyeGrass";
 import { Environment } from "./Environment";
 import { EventLogger, SilentEventLogger } from "./EventLogger";
+import { pos } from "./positions";
 
 export const makeEnvironment = (
   logger: EventLogger = new SilentEventLogger()
@@ -18,10 +19,7 @@ export const makeEnvironment = (
       //   { fat: 20, energy: 20, position: { x: 7, y: 6 }, memory: [] },
       //   "sally"
       // ),
-      new Chicken(
-        { fat: 30, energy: 20, position: { x: 2, y: 9 }, memory: [] },
-        "bob"
-      ),
+      new Chicken({ fat: 30, energy: 20, ...pos(2, 9), memory: [] }, "bob"),
       // new EggOfChicken(
       //   { energy: 20, position: { x: 2, y: 6 }, timeToHatch: 5 },
       //   "bob jr"
@@ -35,15 +33,15 @@ export const makeEnvironment = (
       RyeGrass.makeLooseSeed({ energy: 20 }, { x: 3, y: 6 }),
       RyeGrass.makeLooseSeed({ energy: 20 }, { x: 7, y: 12 }),
 
-      new Bug({ energy: 10, position: { x: 5, y: 10 } }),
+      new Bug({ energy: 10, ...pos(5, 10) }),
 
-      // new RyeGrass({
-      //   energy: 10,
-      //   position: { x: 10, y: 12 },
-      //   leaves: [{ energy: 5, surface: 10 }],
-      //   seeds: [{ energy: 20 }],
-      //   stalkHeight: 8,
-      // }),
+      new RyeGrass({
+        energy: 10,
+        ...pos(10, 12),
+        leaves: [{ energy: 5, surface: 10 }],
+        seeds: [{ energy: 20 }],
+        stalkHeight: 8,
+      }),
     ],
     {
       logger,
