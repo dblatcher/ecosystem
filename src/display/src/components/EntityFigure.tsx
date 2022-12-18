@@ -1,5 +1,5 @@
 import { h } from "preact";
-import { Entity } from "../../../Entity";
+import { Entity } from "../../../abstract-entities/Entity";
 import { Plant } from "../../../abstract-entities/Plant";
 import { PlantDetails } from "./PlantDetails";
 import { AnimalDetails } from "./AnimalDetails";

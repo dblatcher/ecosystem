@@ -1,4 +1,4 @@
-import { Entity, EntityData } from "../Entity";
+import { Entity, EntityData } from "./Entity";
 
 export type OrganicData = EntityData & {
   energy: number;

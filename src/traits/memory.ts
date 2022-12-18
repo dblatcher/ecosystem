@@ -1,4 +1,4 @@
-import { Entity } from "../Entity";
+import { Entity } from "../abstract-entities/Entity";
 import { Position, positionsMatch } from "../positions";
 
 export type MentalEntity = {

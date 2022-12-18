@@ -3,9 +3,9 @@ import {
   getDistance,
   Position,
   positionExists,
-} from "./positions";
-import { Environment } from "./Environment";
-import { Action, actionToString } from "./constants";
+} from "../positions";
+import { Environment } from "../Environment";
+import { Action, actionToString } from "../constants";
 
 export type EntityData = {
   position: Position;

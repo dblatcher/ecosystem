@@ -1,5 +1,5 @@
 import { Space, Position } from "./positions";
-import { Entity } from "./Entity";
+import { Entity } from "./abstract-entities/Entity";
 import { EventConsoleLogger, EventLogger, EventReport } from "./EventLogger";
 import type { Direction } from "./positions";
 

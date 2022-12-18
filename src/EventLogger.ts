@@ -1,4 +1,4 @@
-import type { Entity } from "./Entity";
+import type { Entity } from "./abstract-entities/Entity";
 
 export type EventReport = { message: string; from?: Entity };
 

@@ -1,6 +1,6 @@
 import { Animal } from "../abstract-entities/Animal";
 import { AnimalWithMemory } from "../abstract-entities/AnimalWithMemory";
-import { Entity } from "../Entity";
+import { Entity } from "../abstract-entities/Entity";
 import { entityTypeIsOfClass } from "../entity-lookup";
 import {
   getRandomDirection,

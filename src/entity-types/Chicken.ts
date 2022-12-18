@@ -6,7 +6,7 @@ import {
 import { Egg } from "../abstract-entities/Egg";
 import { Organic } from "../abstract-entities/Organic";
 import { Seed } from "../abstract-entities/Seed";
-import { Entity } from "../Entity";
+import { Entity } from "../abstract-entities/Entity";
 import { Action } from "../constants";
 import { getRandomDirection, positionsMatch } from "../positions";
 import { manageFatLevel, FatManagementPlan } from "../traits/digestion";

@@ -1,4 +1,4 @@
-import { Entity } from "../Entity";
+import { Entity } from "../abstract-entities/Entity";
 
 
 export class Stone extends Entity {

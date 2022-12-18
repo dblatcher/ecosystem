@@ -7,7 +7,7 @@ import {
 } from "../positions";
 import { Organic, OrganicData } from "./Organic";
 import { Corpse } from "../entity-types/Corpse";
-import { Entity } from "../Entity";
+import { Entity } from "./Entity";
 import {
   MentalEntity,
   entityToMentalEntity,

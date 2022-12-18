@@ -4,7 +4,7 @@ import { Egg } from "./abstract-entities/Egg";
 import { Organic } from "./abstract-entities/Organic";
 import { Plant } from "./abstract-entities/Plant";
 import { Seed } from "./abstract-entities/Seed";
-import { Entity } from "./Entity";
+import { Entity } from "./abstract-entities/Entity";
 import { Berry } from "./entity-types/Berry";
 import { Bug } from "./entity-types/Bug";
 import { Chicken, EggOfChicken } from "./entity-types/Chicken";
