@@ -6,6 +6,7 @@ import {
   searchInOneRandomDirection,
   pickNearestFoodInSightAndKeepItAsTarget,
 } from "../traits/search";
+import { Action } from "../constants";
 
 export class Bug extends Animal {
   ENTITY_TYPE_ID = "Bug";
@@ -27,10 +28,10 @@ export class Bug extends Animal {
     const food = this.findExistingFoodTargetFrom(thingsICanSee);
 
     if (food) {
-      this.lastAction = "approach and eat";
+      this.lastAction = Action.goToFood;
       return this.approachAndEat(food as Organic);
     } else {
-      this.lastAction = "search for food";
+      this.lastAction = Action.searchForFood;
       return this.searchForFood();
     }
   }

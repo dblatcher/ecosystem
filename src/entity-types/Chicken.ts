@@ -7,6 +7,7 @@ import { Egg } from "../abstract-entities/Egg";
 import { Organic } from "../abstract-entities/Organic";
 import { Seed } from "../abstract-entities/Seed";
 import { Entity } from "../Entity";
+import { Action } from "../constants";
 import { getRandomDirection, positionsMatch } from "../positions";
 import { manageFatLevel, FatManagementPlan } from "../traits/digestion";
 import {
@@ -79,13 +80,13 @@ export class Chicken extends AnimalWithMemory {
     const foodTargetEntity = this.findExistingFoodTargetFrom(thingsICanSee);
 
     if (foodTargetEntity) {
-      this.lastAction = 'go to food'
+      this.lastAction = Action.goToFood;
       return this.approachAndEat(foodTargetEntity as Organic, 2);
     } else if (target) {
-      this.lastAction = 'go to food'
+      this.lastAction = Action.goToFood;
       return this.moveTowards(target, 2);
     } else {
-      this.lastAction = 'search for food'
+      this.lastAction = Action.searchForFood;
       return this.searchForFood();
     }
   }
@@ -105,9 +106,9 @@ export class Chicken extends AnimalWithMemory {
       timeToHatch: 10,
     });
 
-    egg.join(environment, undefined, `${this.description} laid an egg!`)
+    egg.join(environment, undefined, `${this.description} laid an egg!`);
+    this.lastAction = Action.layEgg;
   }
-
 
   act() {
     this.manageFat(plan);
@@ -124,10 +125,9 @@ export class Chicken extends AnimalWithMemory {
     ) {
       return this.feed(thingsICanSee);
     } else if (this.feelsSafe) {
-      this.lastAction = 'lay egg'
       return this.layEgg();
     } else {
-      this.lastAction = 'wander'
+      this.lastAction = Action.wander;
       return this.moveBy(getRandomDirection(), 1);
     }
   }

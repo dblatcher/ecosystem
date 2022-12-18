@@ -13,6 +13,7 @@ import {
   entityToMentalEntity,
   mentalEntitiesMatch,
 } from "../traits/memory";
+import { Action } from "../constants";
 
 export type AnimalData = OrganicData & {
   direction?: Direction;
@@ -136,6 +137,7 @@ export abstract class Animal extends Organic {
     }
 
     this.data.foodTarget = undefined;
+    this.lastAction = Action.eat;
     return this.eatWhole(food);
   }
 

@@ -5,6 +5,7 @@ import {
   positionExists,
 } from "./positions";
 import { Environment } from "./Environment";
+import { Action, actionToString } from "./constants";
 
 export type EntityData = {
   position: Position;
@@ -15,7 +16,7 @@ export abstract class Entity {
   id?: string;
   ENTITY_TYPE_ID = "Entity";
   environment?: Environment;
-  protected lastAction?: string;
+  protected lastAction?: Action;
 
   constructor(data: EntityData, id?: string) {
     this.data = data;
@@ -31,7 +32,9 @@ export abstract class Entity {
   }
 
   get action(): string {
-    return this.lastAction || "";
+    return typeof this.lastAction === "undefined"
+      ? ""
+      : actionToString(this.lastAction);
   }
 
   findNearestMatch(
