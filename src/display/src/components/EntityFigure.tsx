@@ -1,4 +1,4 @@
-import { h, Fragment } from "preact";
+import { h } from "preact";
 import { Entity } from "../../../Entity";
 import { Plant } from "../../../abstract-entities/Plant";
 import { PlantDetails } from "./PlantDetails";
@@ -33,6 +33,21 @@ const EntityFigure = ({ entity }: Props) => {
       >
         {entity.ENTITY_TYPE_ID.substring(0, 1)}
       </span>
+      <div
+        style={{
+          fontSize: "1em",
+          padding: '0 .2em',
+          position: "absolute",
+          left: "100%",
+          display: "block",
+          top: "0",
+          backgroundColor: "rgba(0,0,0,0.6)",
+          color: "white",
+          whiteSpace: "nowrap",
+        }}
+      >
+        {entity.action}
+      </div>
 
       {entity instanceof Plant && <PlantDetails plant={entity} />}
       {entity instanceof Animal && <AnimalDetails animal={entity} />}

@@ -79,10 +79,13 @@ export class Chicken extends AnimalWithMemory {
     const foodTargetEntity = this.findExistingFoodTargetFrom(thingsICanSee);
 
     if (foodTargetEntity) {
+      this.lastAction = 'go to food'
       return this.approachAndEat(foodTargetEntity as Organic, 2);
     } else if (target) {
+      this.lastAction = 'go to food'
       return this.moveTowards(target, 2);
     } else {
+      this.lastAction = 'search for food'
       return this.searchForFood();
     }
   }
@@ -121,8 +124,10 @@ export class Chicken extends AnimalWithMemory {
     ) {
       return this.feed(thingsICanSee);
     } else if (this.feelsSafe) {
+      this.lastAction = 'lay egg'
       return this.layEgg();
     } else {
+      this.lastAction = 'wander'
       return this.moveBy(getRandomDirection(), 1);
     }
   }

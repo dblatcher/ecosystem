@@ -5,7 +5,9 @@ import { RyeGrass, RyeSeed } from "./entity-types/RyeGrass";
 import { Environment } from "./Environment";
 import { EventLogger, SilentEventLogger } from "./EventLogger";
 
-export const makeEnvironment = (logger:EventLogger = new SilentEventLogger() ): Environment => {
+export const makeEnvironment = (
+  logger: EventLogger = new SilentEventLogger()
+): Environment => {
   return new Environment(
     {
       space: { width: 12, height: 20 },
@@ -17,7 +19,7 @@ export const makeEnvironment = (logger:EventLogger = new SilentEventLogger() ): 
       //   "sally"
       // ),
       new Chicken(
-        { fat: 50, energy: 100, position: { x: 2, y: 6 }, memory: [] },
+        { fat: 30, energy: 20, position: { x: 2, y: 9 }, memory: [] },
         "bob"
       ),
       // new EggOfChicken(
@@ -32,6 +34,8 @@ export const makeEnvironment = (logger:EventLogger = new SilentEventLogger() ): 
       RyeGrass.makeLooseSeed({ energy: 20 }, { x: 9, y: 6 }),
       RyeGrass.makeLooseSeed({ energy: 20 }, { x: 3, y: 6 }),
       RyeGrass.makeLooseSeed({ energy: 20 }, { x: 7, y: 12 }),
+
+      new Bug({ energy: 10, position: { x: 5, y: 10 } }),
 
       // new RyeGrass({
       //   energy: 10,

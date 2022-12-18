@@ -15,6 +15,7 @@ export abstract class Entity {
   id?: string;
   ENTITY_TYPE_ID = "Entity";
   environment?: Environment;
+  protected lastAction?: string;
 
   constructor(data: EntityData, id?: string) {
     this.data = data;
@@ -27,6 +28,10 @@ export abstract class Entity {
     return id
       ? `${id} the ${ENTITY_TYPE_ID}${place}`
       : `${ENTITY_TYPE_ID}${place}`;
+  }
+
+  get action(): string {
+    return this.lastAction || "";
   }
 
   findNearestMatch(
@@ -119,5 +124,7 @@ export abstract class Entity {
     return this.environment?.receiveReport({ message, from: this });
   }
 
-  act() {}
+  act() {
+    this.lastAction = undefined;
+  }
 }
