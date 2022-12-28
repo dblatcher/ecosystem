@@ -26,6 +26,7 @@ export abstract class Animal extends Organic {
   ENTITY_TYPE_ID = "Animal";
   observationRange = 2;
   corpseEnergy = 1;
+  baseEnergyUse = 1;
   foodTypes: typeof Organic[] = [];
 
   constructor(data: AnimalData, id?: string) {
@@ -129,8 +130,7 @@ export abstract class Animal extends Organic {
 
     if (distance > 1) {
       this.report(
-        `${this.description} moving towards ${
-          food.description
+        `${this.description} moving towards ${food.description
         }, ${distance.toFixed(4)} away`
       );
       return this.moveTowards(food, speed);
@@ -142,7 +142,7 @@ export abstract class Animal extends Organic {
   }
 
   starve(): boolean {
-    this.data.energy--;
+    this.data.energy -= this.baseEnergyUse;
 
     if (this.data.energy <= 0) {
       this.die(`Oh no! ${this.description} has starved!`);
