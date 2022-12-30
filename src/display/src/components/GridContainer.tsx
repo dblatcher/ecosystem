@@ -9,20 +9,30 @@ type Props = {};
 type State = {
   log: string[];
   gridScalePercent: number;
+  autoTickRate: number;
 };
 
 export default class GridContainer extends Component<Props, State> {
   environment?: Environment;
+  timer?: number;
 
   constructor(props: Record<string, never>) {
     super(props);
     this.state = {
       log: [],
       gridScalePercent: 100,
+      autoTickRate: 0,
     };
     this.tickEnviroment = this.tickEnviroment.bind(this);
     this.scaleDown = this.scaleDown.bind(this);
     this.scaleUp = this.scaleUp.bind(this);
+    this.setTickRate = this.setTickRate.bind(this);
+
+  }
+
+
+  componentWillUnmount(): void {
+    window.clearInterval(this.timer)
   }
 
   tickEnviroment() {
@@ -47,8 +57,17 @@ export default class GridContainer extends Component<Props, State> {
     });
   }
 
+  setTickRate(value: number) {
+    const adjustedValue = Math.min(Math.max(0, value), 10)
+    this.setState({ autoTickRate: adjustedValue })
+    window.clearInterval(this.timer)
+    if (adjustedValue > 0) {
+      this.timer = window.setInterval(this.tickEnviroment, 10 * (11 - adjustedValue))
+    }
+  }
+
   render() {
-    const { log, gridScalePercent } = this.state;
+    const { log, gridScalePercent, autoTickRate } = this.state;
     return (
       <div style={{ display: "flex" }}>
         {!!this.environment && (
@@ -66,12 +85,18 @@ export default class GridContainer extends Component<Props, State> {
         )}
 
         <section>
+          <button disabled={autoTickRate > 0} onClick={this.tickEnviroment}>tick</button>
+          <div>
+            <span>{autoTickRate}</span>
+            <button onClick={() => { this.setTickRate(autoTickRate + 1) }}>+</button>
+            <button onClick={() => { this.setTickRate(autoTickRate - 1) }}>-</button>
+          </div>
+          <hr />
           <ul>
             {log.map((entry, index) => (
               <li key={index}>{entry}</li>
             ))}
           </ul>
-          <button onClick={this.tickEnviroment}>tick</button>
         </section>
       </div>
     );
