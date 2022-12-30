@@ -14,9 +14,12 @@ import {
   pickNearestFoodInMemoryAndKeepItAsTarget,
   searchInOneRandomDirection,
 } from "../traits/search";
+import { manageSleeping } from "../traits/sleep";
 
 export type ChickenData = AnimalWithMemoryData & {
   fat: number;
+  isAsleep: boolean;
+  sleepDebt: number;
 };
 
 const plan: FatManagementPlan = {
@@ -48,6 +51,8 @@ export class EggOfChicken extends Egg {
       position: this.data.position,
       energy: this.data.energy,
       fat: 10,
+      isAsleep: false,
+      sleepDebt: 0,
       memory: [],
     });
   }
@@ -74,6 +79,7 @@ export class Chicken extends AnimalWithMemory {
   searchForFood = searchInOneRandomDirection(this);
   chooseFoodTarget = pickNearestFoodInMemoryAndKeepItAsTarget(this);
   manageFat = manageFatLevel(this);
+  manageSleep = manageSleeping(this);
 
   feed(thingsICanSee: Entity[]) {
     const target = this.chooseFoodTarget();
@@ -112,9 +118,17 @@ export class Chicken extends AnimalWithMemory {
 
   act() {
     this.manageFat(plan);
+    this.manageSleep({});
+
     const diedOfStarvation = this.starve();
     if (diedOfStarvation) {
       return;
+    }
+
+    if (this.data.isAsleep) {
+      this.lastAction = Action.sleep
+      this.report(`${this.description} is asleep, sleepDebt = ${this.data.sleepDebt}`)
+      return
     }
 
     const thingsICanSee = this.observe();

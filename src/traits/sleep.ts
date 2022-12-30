@@ -21,20 +21,25 @@ export type SleepManagementPlan = {
 
 }
 
-const sleepDebtGainPerTick = (hoursOfSleepNeeded: number): number => {
-    return 24 / (24 - hoursOfSleepNeeded)
+const ticksPerHour = 15 * 60 * 60
+
+
+
+const sleepDebtGainPerTickAwake = (hoursOfSleepNeeded: number): number => {
+    return (ticksPerHour * 24) / (24 - hoursOfSleepNeeded)
 }
 const sleepRestoredPerTick = (hoursOfSleepNeeded: number): number => {
-    return 24 / (hoursOfSleepNeeded)
+    return (ticksPerHour * 24) / (hoursOfSleepNeeded)
 }
 
-// TO DO - make sure this works - probably wrong
-const checkIfTimeForSleep = (hours: number, animal: AnimalThatSleeps) {
+const checkIfTimeForSleep = (hours: number, animal: AnimalThatSleeps) => {
     const {
         sleepStartTime = DEFAULT.sleepStartTime,
         wakeTime = DEFAULT.wakeTime,
     } = animal;
-    return hours >= sleepStartTime && hours < wakeTime
+    return sleepStartTime < wakeTime
+        ? hours >= sleepStartTime && hours < wakeTime
+        : hours >= sleepStartTime || hours < wakeTime
 }
 
 const adjustSleepDebt = (that: AnimalThatSleeps): void => {
@@ -46,7 +51,7 @@ const adjustSleepDebt = (that: AnimalThatSleeps): void => {
         that.data.sleepDebt -= sleepRestoredPerTick(hoursOfSleepNeeded)
         that.data.sleepDebt = Math.max(0, that.data.sleepDebt)
     } else (
-        that.data.sleepDebt += sleepDebtGainPerTick(hoursOfSleepNeeded)
+        that.data.sleepDebt += sleepDebtGainPerTickAwake(hoursOfSleepNeeded)
     )
 }
 
@@ -62,7 +67,7 @@ export const manageSleeping = (that: AnimalThatSleeps) => (plan: SleepManagement
     const isTimeForSleep = checkIfTimeForSleep(hours, that);
 
     adjustSleepDebt(that)
-    const {sleepDebt} = that.data
+    const { sleepDebt } = that.data
 
     if (that.data.isAsleep) {
         if (sleepDebt <= 0 || !isTimeForSleep) {
@@ -71,7 +76,7 @@ export const manageSleeping = (that: AnimalThatSleeps) => (plan: SleepManagement
         }
     } else {
         if (isTimeForSleep && sleepDebt > 1) {
-            that.data.isAsleep = false;
+            that.data.isAsleep = true;
             that.report(`${that.description} fell asleep with ${sleepDebt.toFixed(4)} sleepDebt`);
         }
     }

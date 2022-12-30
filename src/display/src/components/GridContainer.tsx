@@ -9,7 +9,7 @@ type Props = {};
 type State = {
   log: string[];
   gridScalePercent: number;
-  autoTickRate: number;
+  tickRate: number;
 };
 
 export default class GridContainer extends Component<Props, State> {
@@ -21,13 +21,12 @@ export default class GridContainer extends Component<Props, State> {
     this.state = {
       log: [],
       gridScalePercent: 100,
-      autoTickRate: 0,
+      tickRate: 0,
     };
     this.tickEnviroment = this.tickEnviroment.bind(this);
     this.scaleDown = this.scaleDown.bind(this);
     this.scaleUp = this.scaleUp.bind(this);
     this.setTickRate = this.setTickRate.bind(this);
-
   }
 
 
@@ -59,7 +58,7 @@ export default class GridContainer extends Component<Props, State> {
 
   setTickRate(value: number) {
     const adjustedValue = Math.min(Math.max(0, value), 10)
-    this.setState({ autoTickRate: adjustedValue })
+    this.setState({ tickRate: adjustedValue })
     window.clearInterval(this.timer)
     if (adjustedValue > 0) {
       this.timer = window.setInterval(this.tickEnviroment, 10 * (11 - adjustedValue))
@@ -67,7 +66,7 @@ export default class GridContainer extends Component<Props, State> {
   }
 
   render() {
-    const { log, gridScalePercent, autoTickRate } = this.state;
+    const { log, gridScalePercent, tickRate } = this.state;
     return (
       <div style={{ display: "flex" }}>
         {!!this.environment && (
@@ -85,11 +84,11 @@ export default class GridContainer extends Component<Props, State> {
         )}
 
         <section>
-          <button disabled={autoTickRate > 0} onClick={this.tickEnviroment}>tick</button>
+          <button disabled={tickRate > 0} onClick={this.tickEnviroment}>tick</button>
           <div>
-            <span>{autoTickRate}</span>
-            <button onClick={() => { this.setTickRate(autoTickRate + 1) }}>+</button>
-            <button onClick={() => { this.setTickRate(autoTickRate - 1) }}>-</button>
+            <span>{tickRate}</span>
+            <button onClick={() => { this.setTickRate(tickRate + 1) }}>+</button>
+            <button onClick={() => { this.setTickRate(tickRate - 1) }}>-</button>
           </div>
           <hr />
           <ul>

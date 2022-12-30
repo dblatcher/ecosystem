@@ -4,6 +4,7 @@ export enum Action {
   eat,
   layEgg,
   wander,
+  sleep,
 }
 
 export const actionToString = (action: Action): string => {
@@ -18,5 +19,7 @@ export const actionToString = (action: Action): string => {
       return "layEgg";
     case Action.wander:
       return "wander";
+    case Action.sleep:
+      return "sleep"
   }
 };

@@ -11,15 +11,15 @@ export const makeEnvironment = (
 ): Environment => {
   return new Environment(
     {
-      space: { width: 12, height: 20 },
-      time: (7.75 * (60 * 60)/15),
+      space: { width: 20, height: 20 },
+      time: (21.975 * (60 * 60) / 15),
     },
     [
       // new Chicken(
       //   { fat: 20, energy: 20, position: { x: 7, y: 6 }, memory: [] },
       //   "sally"
       // ),
-      new Chicken({ fat: 30, energy: 20, ...pos(2, 9), memory: [] }, "bob"),
+      new Chicken({ fat: 30, energy: 200, isAsleep: true, sleepDebt: 93312000000, ...pos(2, 9), memory: [] }, "bob"),
       // new EggOfChicken(
       //   { energy: 20, position: { x: 2, y: 6 }, timeToHatch: 5 },
       //   "bob jr"
@@ -33,15 +33,15 @@ export const makeEnvironment = (
       RyeGrass.makeLooseSeed({ energy: 20 }, { x: 3, y: 6 }),
       RyeGrass.makeLooseSeed({ energy: 20 }, { x: 7, y: 12 }),
 
-      new Bug({ energy: 10, ...pos(5, 10) }),
+      // new Bug({ energy: 10, ...pos(5, 10) }),
 
-      new RyeGrass({
-        energy: 10,
-        ...pos(10, 12),
-        leaves: [{ energy: 5, surface: 10 }],
-        seeds: [{ energy: 20 }],
-        stalkHeight: 8,
-      }),
+      // new RyeGrass({
+      //   energy: 10,
+      //   ...pos(10, 12),
+      //   leaves: [{ energy: 5, surface: 10 }],
+      //   seeds: [{ energy: 20 }],
+      //   stalkHeight: 8,
+      // }),
     ],
     {
       logger,
