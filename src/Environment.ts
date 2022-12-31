@@ -2,8 +2,7 @@ import { Space, Position } from "./positions";
 import { Entity } from "./abstract-entities/Entity";
 import { EventConsoleLogger, EventLogger, EventReport } from "./EventLogger";
 import type { Direction } from "./positions";
-
-const SECONDS_PER_TICK = 15;
+import { Clock } from "./Clock";
 
 export type EnvironmentData = {
   space: Space;
@@ -12,12 +11,14 @@ export type EnvironmentData = {
 
 type EnvironmentConfig = {
   logger?: EventLogger;
+  clock?: Clock;
 };
 
 export class Environment {
   data: EnvironmentData;
   entities: Entity[];
   eventLogger: EventConsoleLogger;
+  clock: Clock;
 
   constructor(
     data: EnvironmentData,
@@ -27,6 +28,7 @@ export class Environment {
     this.data = data;
     this.entities = [];
     this.eventLogger = config.logger || new EventConsoleLogger();
+    this.clock = config.clock || new Clock(20);
     entities.forEach((entity) => entity.join(this));
   }
 
@@ -35,30 +37,11 @@ export class Environment {
   }
 
   get calendarTime() {
-    const { time } = this.data;
-    const totalSeconds = time * SECONDS_PER_TICK;
-    const days = Math.floor(totalSeconds / (24 * 60 * 60));
-    const secondsToday = totalSeconds % (24 * 60 * 60);
-    const hours = Math.floor(secondsToday / (60 * 60));
-    const minutesAndSecondsInSeconds = secondsToday % (60 * 60);
-    const minutes = Math.floor(minutesAndSecondsInSeconds / 60);
-    const seconds = minutesAndSecondsInSeconds % 60;
-    return { days, hours, minutes, seconds };
+    return this.clock.giveCalendarTime(this.data.time)
   }
 
   get timeOfDay() {
-    const { hours } = this.calendarTime;
-
-    if (hours < 4) {
-      return "night";
-    } else if (hours < 8) {
-      return "dawn";
-    } else if (hours < 18) {
-      return "day";
-    } else if (hours < 22) {
-      return "dusk";
-    }
-    return "night";
+    return this.clock.giveTimeOfDay(this.data.time)
   }
 
   isSunlightAt(position: Position): boolean {

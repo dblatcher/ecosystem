@@ -21,15 +21,14 @@ export type SleepManagementPlan = {
 
 }
 
-const ticksPerHour = 15 * 60 * 60
 
-
-
-const sleepDebtGainPerTickAwake = (hoursOfSleepNeeded: number): number => {
-    return (ticksPerHour * 24) / (24 - hoursOfSleepNeeded)
+//  sleepdebt accumalated during the animals waking hours = 1
+//  sleepdebt removed by staying asleet over sleeping hours = 1
+const sleepDebtGainPerTickAwake = (hoursOfSleepNeeded: number, ticksPerDay: number): number => {
+    return (24 / ticksPerDay) / (24 - hoursOfSleepNeeded)
 }
-const sleepRestoredPerTick = (hoursOfSleepNeeded: number): number => {
-    return (ticksPerHour * 24) / (hoursOfSleepNeeded)
+const sleepRestoredPerTick = (hoursOfSleepNeeded: number, ticksPerDay: number): number => {
+    return (24 / ticksPerDay) / (hoursOfSleepNeeded)
 }
 
 const checkIfTimeForSleep = (hours: number, animal: AnimalThatSleeps) => {
@@ -45,14 +44,21 @@ const checkIfTimeForSleep = (hours: number, animal: AnimalThatSleeps) => {
 const adjustSleepDebt = (that: AnimalThatSleeps): void => {
     const {
         hoursOfSleepNeeded = DEFAULT.hoursOfSleepNeeded,
+        environment
     } = that
 
+    if (!environment) {
+        return
+    }
+    const { ticksPerDay } = environment.clock
+
     if (that.data.isAsleep) {
-        that.data.sleepDebt -= sleepRestoredPerTick(hoursOfSleepNeeded)
+        that.data.sleepDebt -= sleepRestoredPerTick(hoursOfSleepNeeded, ticksPerDay)
         that.data.sleepDebt = Math.max(0, that.data.sleepDebt)
     } else (
-        that.data.sleepDebt += sleepDebtGainPerTickAwake(hoursOfSleepNeeded)
+        that.data.sleepDebt += sleepDebtGainPerTickAwake(hoursOfSleepNeeded, ticksPerDay)
     )
+    console.log(that.description, that.data.sleepDebt)
 }
 
 export const manageSleeping = (that: AnimalThatSleeps) => (plan: SleepManagementPlan): void => {

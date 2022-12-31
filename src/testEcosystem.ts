@@ -1,4 +1,5 @@
 // import { Animal } from "./abstract-entities/Animal";
+import { Clock } from "./Clock";
 import { Bug } from "./entity-types/Bug";
 import { Chicken, EggOfChicken } from "./entity-types/Chicken";
 import { RyeGrass, RyeSeed } from "./entity-types/RyeGrass";
@@ -12,14 +13,14 @@ export const makeEnvironment = (
   return new Environment(
     {
       space: { width: 20, height: 20 },
-      time: (21.975 * (60 * 60) / 15),
+      time: (21.975 * (60 * 60) / 20),
     },
     [
       // new Chicken(
       //   { fat: 20, energy: 20, position: { x: 7, y: 6 }, memory: [] },
       //   "sally"
       // ),
-      new Chicken({ fat: 30, energy: 200, isAsleep: true, sleepDebt: 93312000000, ...pos(2, 9), memory: [] }, "bob"),
+      new Chicken({ fat: 30, energy: 200, isAsleep: true, sleepDebt: 1, ...pos(2, 9), memory: [] }, "bob"),
       // new EggOfChicken(
       //   { energy: 20, position: { x: 2, y: 6 }, timeToHatch: 5 },
       //   "bob jr"
