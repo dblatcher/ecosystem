@@ -65,7 +65,7 @@ export class Chicken extends AnimalWithMemory {
   foodTypes = [Seed];
   observationRange = 4;
   costToLayEgg = 25;
-  baseEnergyUse = 0;
+  baseEnergyUse = 0.1;
 
   constructor(data: ChickenData, id?: string) {
     super(data, id);

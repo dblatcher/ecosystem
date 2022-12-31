@@ -58,7 +58,6 @@ const adjustSleepDebt = (that: AnimalThatSleeps): void => {
     } else (
         that.data.sleepDebt += sleepDebtGainPerTickAwake(hoursOfSleepNeeded, ticksPerDay)
     )
-    console.log(that.description, that.data.sleepDebt)
 }
 
 export const manageSleeping = (that: AnimalThatSleeps) => (plan: SleepManagementPlan): void => {
