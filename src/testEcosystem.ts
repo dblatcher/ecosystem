@@ -1,4 +1,5 @@
 // import { Animal } from "./abstract-entities/Animal";
+import { Animal } from "./abstract-entities/Animal";
 import { Clock } from "./Clock";
 import { Bug } from "./entity-types/Bug";
 import { Chicken, EggOfChicken } from "./entity-types/Chicken";
@@ -10,12 +11,12 @@ import { pos } from "./positions";
 const clock = new Clock(20)
 
 export const makeEnvironment = (
-  logger: EventLogger = new SilentEventLogger()
+  logger: EventLogger = new SilentEventLogger((r) => r.from instanceof Animal)
 ): Environment => {
   return new Environment(
     {
-      space: { width: 20, height: 20 },
-      time: clock.giveTickCount({ days: 0, hours: 20, minutes: 30, seconds: 0 })
+      space: { width: 25, height: 25 },
+      time: clock.giveTickCount({ days: 0, hours: 8, minutes: 55, seconds: 0 })
     },
     [
       // new Chicken(

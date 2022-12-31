@@ -114,7 +114,10 @@ export abstract class Animal extends Organic {
   }
 
   moveBy(direction: Direction, speed = 1) {
-    this.data.position = displace(this.data.position, direction, speed);
+    const wouldBeAt = displace(this.data.position, direction, speed)
+    if (!this.environment?.isOutOfBounds(wouldBeAt)) {
+      this.data.position = displace(this.data.position, direction, speed);
+    }
   }
 
   moveTowards(entity: Entity | MentalEntity, speed = 1) {

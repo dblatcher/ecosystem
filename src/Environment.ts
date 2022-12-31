@@ -1,4 +1,4 @@
-import { Space, Position } from "./positions";
+import { Space, Position, getRandomDirection, positionExists } from "./positions";
 import { Entity } from "./abstract-entities/Entity";
 import { EventConsoleLogger, EventLogger, EventReport } from "./EventLogger";
 import type { Direction } from "./positions";
@@ -44,14 +44,18 @@ export class Environment {
     return this.clock.giveTimeOfDay(this.data.time)
   }
 
+  isOutOfBounds(position: Position): boolean {
+    return !positionExists(position, this.data.space)
+  }
+
   isSunlightAt(position: Position): boolean {
     return this.timeOfDay === "day";
   }
 
   getWindAt(position: Position): { direction: Direction; speed: number } {
     return {
-      direction: { x: 0, y: 1 },
-      speed: 3,
+      direction: getRandomDirection(),
+      speed: Math.floor(Math.random() * 4),
     };
   }
 
