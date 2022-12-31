@@ -1,3 +1,11 @@
+
+type CalendarTime = {
+    days: number;
+    hours: number;
+    minutes: number;
+    seconds: number;
+}
+
 export class Clock {
     readonly secondsPerTick: number
 
@@ -9,7 +17,14 @@ export class Clock {
         return (24 * 60 * 60) / this.secondsPerTick
     }
 
-    giveCalendarTime(time: number) {
+    giveTickCount(time: CalendarTime): number {
+        const { days, hours, minutes, seconds } = time;
+        const { secondsPerTick } = this
+        const secondsElapsed = (days * 24 * 60 * 60) + (hours * 60 * 60) + (minutes * 60) + seconds;
+        return secondsElapsed / secondsPerTick
+    }
+
+    giveCalendarTime(time: number): CalendarTime {
         const totalSeconds = time * this.secondsPerTick;
         const days = Math.floor(totalSeconds / (24 * 60 * 60));
         const secondsToday = totalSeconds % (24 * 60 * 60);

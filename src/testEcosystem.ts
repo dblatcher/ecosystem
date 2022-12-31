@@ -7,13 +7,15 @@ import { Environment } from "./Environment";
 import { EventLogger, SilentEventLogger } from "./EventLogger";
 import { pos } from "./positions";
 
+const clock = new Clock(20)
+
 export const makeEnvironment = (
   logger: EventLogger = new SilentEventLogger()
 ): Environment => {
   return new Environment(
     {
       space: { width: 20, height: 20 },
-      time: (21.975 * (60 * 60) / 20),
+      time: clock.giveTickCount({ days: 0, hours: 20, minutes: 30, seconds: 0 })
     },
     [
       // new Chicken(
@@ -45,7 +47,7 @@ export const makeEnvironment = (
       // }),
     ],
     {
-      logger,
+      logger, clock
     }
   );
 };
